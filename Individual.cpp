@@ -1,12 +1,12 @@
 /*************************************************************************
-                           User  -  description
+ Individual  -  description
                              -------------------
     début                : $05/05/2021$
     copyright            : (C) $2021$ par $hanaa Al zahabi$
     e-mail               : $hanaa.al-zahabi@insa-lyon.fr$
 *************************************************************************/
 
-//---------- Réalisation de la classe <User> (fichier User.cpp) ------------
+//---------- Réalisation de la classe <Individual> (fichier Individual.cpp) ------------
 
 //---------------------------------------------------------------- INCLUDE
 
@@ -16,50 +16,68 @@
 using namespace std;
 
 //------------------------------------------------------ Include personnel
-#include "User.h"
+#include "Individual.h"
 
 //------------------------------------------------------------- Constantes
 
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
-bool User :: isEqual ( string name, string passeword)
+bool Individual :: isReliable ( ) const
 {
-    return ( this.name==name && this.passeword==passeword);
+    bool reliable = true;
+    for ( list <Sensor> :: iterator it= sensors.begin(); it != sensors.end(); it++ )
+    {
+        if !( it -> isValid()) ) reliable= false;
+    }
+    return reliable; 
 }
 
 //-------------------------------------------- Getters - Setters
-string User :: GetName () const
+list<Sensor> Individual :: GetSensors()const
 {
-    return name;
+    return sensors; 
+}
+
+int Individual :: GetPoints () const
+{
+    return points;
+}
+
+void Individual :: SetReliable (bool reliable)
+{
+    this.reliable = reliable;
 }
 
 //------------------------------------------------- Surcharge d'opérateurs
 
 //-------------------------------------------- Constructeurs - destructeur
-User :: User ( const string & name, const string & passeword )
+Individual :: Individual (  const string & name, const string & passeword, const string & id, const list <sensor> & sensors, const bool & reliable, const int & point) : User {name, passeword}
 // Algorithme :
 //
 {
     #ifdef MAP
-        cout << "Appel au constructeur de <User>" << endl;
+        cout << "Appel au constructeur de <Individual>" << endl;
     #endif
+    this.id=id;
+    this.sensors = sensors;
+    this.reliable= reliable;
+    this.point = point;
     
-    this.name = name;
-    this.passeword = passeword;
-} //----- Fin de User
+} //----- Fin de Individual
 
 
-User::~User ( )
+Individual::~Individual ( )
 // Algorithme :
 //
 {
 #ifdef MAP
-    cout << "Appel au destructeur de <User>" << endl;
+    cout << "Appel au destructeur de <Individual>" << endl;
 #endif
-} //----- Fin de ~User
+} //----- Fin de ~Individual
 
 
 //------------------------------------------------------------------ PRIVE
 
 //----------------------------------------------------- Méthodes protégées
+

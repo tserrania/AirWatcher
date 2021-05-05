@@ -1,53 +1,47 @@
 /*************************************************************************
-                           User  -  description
+                           Agency  -  description
                              -------------------
  début                : $05/05/2021$
  copyright          : (C) $2021$ par $hanaa Al zahabi$
  e-mail               : $hanaa.al-zahabi@insa-lyon.fr$
 *************************************************************************/
 
-//---------- Interface de la classe <User> (fichier User.h) ----------------
-#if ! defined ( USER_H )
-#define USER_H
+//---------- Interface de la classe <Agency> (fichier Agency.h) ----------------
+#if ! defined ( AGENCY_H )
+#define AGENCY_H
 
 //--------------------------------------------------- Interfaces utilisées
-#include <string>
+
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
 
 //------------------------------------------------------------------------
-// Rôle de la classe <User>
+// Rôle de la classe <Agency>
 //
 //
 //------------------------------------------------------------------------
 
-class User
+class Agency
 {
 //----------------------------------------------------------------- PUBLIC
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    public bool isEqual ( string name, string passeword);
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
-    
+
 //-------------------------------------------- Getters - Setters
-    public string GetName()const ;
       
 //------------------------------------------------- Surcharge d'opérateurs
 
 //-------------------------------------------- Constructeurs - destructeur
-    User ( const string & name, const string & passeword );
+    Agency ( const string & name, const string & passeword );
     // Mode d'emploi () :
     //
     // Contrat :
     //
 
 
-    virtual ~User ( );
+    virtual ~Agency ( );
     // Mode d'emploi :
     //
     // Contrat :
@@ -59,11 +53,10 @@ protected:
 //----------------------------------------------------- Méthodes protégées
 
 //----------------------------------------------------- Attributs protégés
-    string name;
-    string passeword;
+
 };
 
-//-------------------------------- Autres définitions dépendantes de <User>
+//-------------------------------- Autres définitions dépendantes de <Agency>
 
-#endif // USER_H
+#endif // AGENCY_H
 

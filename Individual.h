@@ -1,53 +1,60 @@
 /*************************************************************************
-                           User  -  description
+                           Individual  -  description
                              -------------------
  début                : $05/05/2021$
  copyright          : (C) $2021$ par $hanaa Al zahabi$
  e-mail               : $hanaa.al-zahabi@insa-lyon.fr$
 *************************************************************************/
 
-//---------- Interface de la classe <User> (fichier User.h) ----------------
-#if ! defined ( USER_H )
-#define USER_H
+//---------- Interface de la classe <Individual> (fichier Individual.h) ----------------
+#if ! defined ( INDIVIDUAL_H )
+#define INDIVIDUAL_H
 
 //--------------------------------------------------- Interfaces utilisées
 #include <string>
+#include "User.h"
+#include"Sensor.h"
+using namespace std;
+
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
 
 //------------------------------------------------------------------------
-// Rôle de la classe <User>
+// Rôle de la classe <Individual>
 //
 //
 //------------------------------------------------------------------------
 
-class User
+class Individual : public User
 {
 //----------------------------------------------------------------- PUBLIC
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    public bool isEqual ( string name, string passeword);
+    public bool isReliable ( ) const;
     // Mode d'emploi :
     //
     // Contrat :
     //
     
 //-------------------------------------------- Getters - Setters
-    public string GetName()const ;
-      
+    public list<Sensor> GetSensors()const ;
+    
+    public int GetPoints () const ;
+    
+    public void SetReliable (bool reliable);
 //------------------------------------------------- Surcharge d'opérateurs
 
 //-------------------------------------------- Constructeurs - destructeur
-    User ( const string & name, const string & passeword );
+    Individual ( const string & name, const string & passeword, const string & id, const list <sensor> & sensors, const bool & reliable, const int & point);
     // Mode d'emploi () :
     //
     // Contrat :
     //
 
 
-    virtual ~User ( );
+    virtual ~Individual ( );
     // Mode d'emploi :
     //
     // Contrat :
@@ -59,11 +66,12 @@ protected:
 //----------------------------------------------------- Méthodes protégées
 
 //----------------------------------------------------- Attributs protégés
-    string name;
-    string passeword;
+    string id;
+    list <Sensor> sensors;
+    bool reliable;
+    int points;
 };
 
-//-------------------------------- Autres définitions dépendantes de <User>
+//-------------------------------- Autres définitions dépendantes de <Individual>
 
-#endif // USER_H
-
+#endif // INDIVIDUAL_H

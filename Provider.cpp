@@ -1,63 +1,55 @@
 /*************************************************************************
-                           User  -  description
+                           Provider  -  description
                              -------------------
     début                : $05/05/2021$
     copyright            : (C) $2021$ par $hanaa Al zahabi$
     e-mail               : $hanaa.al-zahabi@insa-lyon.fr$
 *************************************************************************/
 
-//---------- Réalisation de la classe <User> (fichier User.cpp) ------------
+//---------- Réalisation de la classe <Provider> (fichier Provider.cpp) ------------
 
 //---------------------------------------------------------------- INCLUDE
 
 //-------------------------------------------------------- Include système
-#include <stdio.h>
-#include <iostream>
-using namespace std;
 
 //------------------------------------------------------ Include personnel
-#include "User.h"
+#include "Provider.h"
 
 //------------------------------------------------------------- Constantes
 
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
-bool User :: isEqual ( string name, string passeword)
-{
-    return ( this.name==name && this.passeword==passeword);
-}
 
 //-------------------------------------------- Getters - Setters
-string User :: GetName () const
+public list <Cleaner> GetCleaners () const
 {
-    return name;
+    return cleaners;
 }
 
 //------------------------------------------------- Surcharge d'opérateurs
 
 //-------------------------------------------- Constructeurs - destructeur
-User :: User ( const string & name, const string & passeword )
+Provider :: Provider ( const string & name, const string & passeword, const string & id, const list <Cleaner> & cleaners ) : User {name, passeword}
 // Algorithme :
 //
 {
     #ifdef MAP
-        cout << "Appel au constructeur de <User>" << endl;
+        cout << "Appel au constructeur de <Provider>" << endl;
     #endif
-    
-    this.name = name;
-    this.passeword = passeword;
-} //----- Fin de User
+    this.id = id;
+    this.cleaners = cleaners; 
+} //----- Fin de Provider
 
 
-User::~User ( )
+Provider::~Provider ( )
 // Algorithme :
 //
 {
 #ifdef MAP
-    cout << "Appel au destructeur de <User>" << endl;
+    cout << "Appel au destructeur de <Provider>" << endl;
 #endif
-} //----- Fin de ~User
+} //----- Fin de ~Provider
 
 
 //------------------------------------------------------------------ PRIVE
