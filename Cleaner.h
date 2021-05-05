@@ -1,13 +1,19 @@
 /*************************************************************************
-                           Point  -  description
+                           Cleaner  -  description
                              -------------------
     début                : 2021/05/05
     copyright            : (C) 2021 par B3104-B3113
 *************************************************************************/
 
-//---------- Interface de la classe <Point> (fichier Point.h) ----------------
-#if ! defined ( POINT_H )
-#define POINT_H
+//---------- Interface de la classe <Cleaner> (fichier Cleaner.h) ----------------
+#if ! defined ( CLEANER_H )
+#define CLEANER_H
+#include <string>
+#include <list>
+#include "Point.h"
+#include "Provider.h"
+#include "Sensor.h"
+#include "Date.h"
 
 //--------------------------------------------------- Interfaces utilisées
 
@@ -16,57 +22,66 @@
 //------------------------------------------------------------------ Types
 
 //------------------------------------------------------------------------
-// Rôle de la classe <Point>
+// Rôle de la classe <Cleaner>
 //
 //
 //------------------------------------------------------------------------
 
-class Point 
+class Cleaner 
 {
 //----------------------------------------------------------------- PUBLIC
 
 public:
 //----------------------------------------------------- Méthodes publiques
 
-    double getLatitude();
+    string getId();
     // Mode d'emploi :
-    //	Retourne la latitude de ce point
-    
-    double getLongitude();
+    // Recupère l'ID du Cleaner
+
+    Point getLocation();
     // Mode d'emploi :
-    //	Retourne la longitude de ce point
-    
-    double getDistance(Point& unPoint);
+    // Recupère l'emplacement du Cleaner
+
+    Date getStart();
     // Mode d'emploi :
-    //	Calcule la distance avec un autre point
+    // Recupère la date de mise en service du Cleaner
+
+    Date getStop();
+    // Mode d'emploi :
+    // Recupère la date d'arrêt du Cleaner
+
 
 //------------------------------------------------- Surcharge d'opérateurs
 
+
 //-------------------------------------------- Constructeurs - destructeur
-
-    Point ( const Point & unPoint );
+    Cleaner ( const Cleaner & unCleaner );
     // Mode d'emploi (constructeur de copie) :
-    // Construit un point à partir d'un autre
-    
-    Point (double lat, double lon);
-    // Mode d'emploi :
-    // Construit un point avec sa latitude et sa longitude
+    // Construit une copie d'un cleaner identique à un autre
 
-    virtual ~Point ( );
+    Cleaner ( string Id,Provider provider,Point location,Date start,Date stop );
     // Mode d'emploi :
-    // Détruit le point
+    // Construit un cleaner avec ses attributs
+
+    virtual ~Cleaner ( );
+    // Mode d'emploi :
+    // Détruit le cleaner
 
 //------------------------------------------------------------------ PRIVE
 
 protected:
 //----------------------------------------------------- Méthodes protégées
+    string id;
+    Provider provider;
+    Point location;
+    Date start;
+    Date stop;
 
 //----------------------------------------------------- Attributs protégés
-    double latitude;
-    double longitude;
+
 };
 
-//-------------------------------- Autres définitions dépendantes de <Point>
+//-------------------------------- Autres définitions dépendantes de <Cleaner>
 
-#endif // POINT_H
+#endif // Cleaner_H
 

@@ -1,13 +1,13 @@
 /*************************************************************************
-                           Point  -  description
+                           Service  -  description
                              -------------------
     début                : 2021/05/05
     copyright            : (C) 2021 par B3104-B3113
 *************************************************************************/
 
-//---------- Interface de la classe <Point> (fichier Point.h) ----------------
-#if ! defined ( POINT_H )
-#define POINT_H
+//---------- Interface de la classe <Service> (fichier Service.h) ----------------
+#if ! defined ( SERVICE_H )
+#define SERVICE_H
 
 //--------------------------------------------------- Interfaces utilisées
 
@@ -16,45 +16,44 @@
 //------------------------------------------------------------------ Types
 
 //------------------------------------------------------------------------
-// Rôle de la classe <Point>
+// Rôle de la classe <Service>
 //
 //
 //------------------------------------------------------------------------
 
-class Point 
+class Service 
 {
 //----------------------------------------------------------------- PUBLIC
 
 public:
 //----------------------------------------------------- Méthodes publiques
+    // type Méthode ( liste des paramètres );
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
 
-    double getLatitude();
-    // Mode d'emploi :
-    //	Retourne la latitude de ce point
-    
-    double getLongitude();
-    // Mode d'emploi :
-    //	Retourne la longitude de ce point
-    
-    double getDistance(Point& unPoint);
-    // Mode d'emploi :
-    //	Calcule la distance avec un autre point
 
 //------------------------------------------------- Surcharge d'opérateurs
 
 //-------------------------------------------- Constructeurs - destructeur
-
-    Point ( const Point & unPoint );
+    Service ( const Service & unService );
     // Mode d'emploi (constructeur de copie) :
-    // Construit un point à partir d'un autre
-    
-    Point (double lat, double lon);
-    // Mode d'emploi :
-    // Construit un point avec sa latitude et sa longitude
+    //
+    // Contrat :
+    //
 
-    virtual ~Point ( );
+    Service ( );
     // Mode d'emploi :
-    // Détruit le point
+    //
+    // Contrat :
+    //
+
+    virtual ~Service ( );
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
 
 //------------------------------------------------------------------ PRIVE
 
@@ -62,11 +61,10 @@ protected:
 //----------------------------------------------------- Méthodes protégées
 
 //----------------------------------------------------- Attributs protégés
-    double latitude;
-    double longitude;
+
 };
 
-//-------------------------------- Autres définitions dépendantes de <Point>
+//-------------------------------- Autres définitions dépendantes de <Service>
 
-#endif // POINT_H
+#endif // SERVICE_H
 
