@@ -1,28 +1,28 @@
 /*************************************************************************
-                           Service  -  description
+                           Date  -  description
                              -------------------
     début                : 2021/05/05
     copyright            : (C) 2021 par B3104-B3113
 *************************************************************************/
 
-//---------- Interface de la classe <Service> (fichier Service.h) ----------------
-#if ! defined ( SERVICE_H )
-#define SERVICE_H
+//---------- Interface de la classe <Date> (fichier Date.h) ----------------
+#if ! defined ( DATE_H )
+#define DATE_H
+#include <string>
 
 //--------------------------------------------------- Interfaces utilisées
-#include <list>
 
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
 
 //------------------------------------------------------------------------
-// Rôle de la classe <Service>
+// Rôle de la classe <Date>
 //
 //
 //------------------------------------------------------------------------
 
-class Service 
+class Date 
 {
 //----------------------------------------------------------------- PUBLIC
 
@@ -33,22 +33,53 @@ public:
     //
     // Contrat :
     //
+    int getJour();
+    // Mode d'emploi :
+
+    int getMois();
+    // Mode d'emploi :
+
+    int getAnnee();
+    // Mode d'emploi :
+
+    int getSec();
+    // Mode d'emploi :
+    
+    int getMin();
+    // Mode d'emploi :
+
+    int getHeure();
+    // Mode d'emploi :
 
 
 //------------------------------------------------- Surcharge d'opérateurs
+    Date & operator = ( const Date & unDate );
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
+
 
 //-------------------------------------------- Constructeurs - destructeur
-    Service ( const Service & unService );
+    Date ( const Date & unDate );
     // Mode d'emploi (constructeur de copie) :
     //
     // Contrat :
     //
 
-    Service (string csv_attributes, string csv_cleaners, string csv_measurements, string csv_providers, string csv_sensors, string csv_users)
-    // Mode d'emploi :
-    // 
+    Date ( int a,int m,int j,int h,int mi,int s);
+    // Mode d'emploi (constructeur de copie) :
+    //
+    // Contrat :
+    //
 
-    virtual ~Service ( );
+    Date ( );
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
+
+    virtual ~Date ( );
     // Mode d'emploi :
     //
     // Contrat :
@@ -58,14 +89,17 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-
+    int heure;
+    int min;
+    int sec;
+    int jour;
+    int mois;
+    int annee;
 //----------------------------------------------------- Attributs protégés
-    list<User> users;
-    list<Sensor> sensors;
-    list<Cleaner> cleaners;
+
 };
 
-//-------------------------------- Autres définitions dépendantes de <Service>
+//-------------------------------- Autres définitions dépendantes de <Date>
 
-#endif // SERVICE_H
+#endif // Date_H
 

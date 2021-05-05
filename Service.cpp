@@ -10,7 +10,12 @@
 //---------------------------------------------------------------- INCLUDE
 
 //-------------------------------------------------------- Include système
+#include <string>
 #include <iostream>
+#include <map>
+#include "Measurement.h"
+#include "Attribute.h"
+#include "Sensor.h"
 using namespace std;
 
 //------------------------------------------------------ Include personnel
@@ -37,13 +42,13 @@ Service::Service ( const Service & unService )
 } //----- Fin de Service (constructeur de copie)
 
 
-Service::Service ( )
-// Algorithme :
-//
+Service::Service (string csv_attributes, string csv_cleaners, string csv_measurements, string csv_providers, string csv_sensors, string csv_users)
 {
 #ifdef MAP
     cout << "Appel au constructeur de <Service>" << endl;
 #endif
+    readSensors(csv_attributes, csv_measurements, csv_sensors);
+    // TODO: Read users, providers and cleaners
 } //----- Fin de Service
 
 
@@ -60,4 +65,84 @@ Service::~Service ( )
 //------------------------------------------------------------------ PRIVE
 
 //----------------------------------------------------- Méthodes protégées
+Date Service::readDate(ifstream& ifs) {
+	string buffer;
+	int a,m,j,h,mi,s;
+	getline(ifs, buffer, '-');
+	a = stoi(buffer);
+	getline(ifs, buffer, '-');
+	m = stoi(buffer);
+	getline(ifs, buffer, ' ');
+	j = stoi(buffer);
+	getline(ifs, buffer, ':');
+	h = stoi(buffer);
+	getline(ifs, buffer, ':');
+	mi = stoi(buffer);
+	getline(ifs, buffer, ';');
+	s = stoi(buffer);
+	return Date(a,m,j,h,mi,s);
+}
 
+void Service::readSensors(string& csv_attributes, string& csv_measurements, string& csv_sensors) {
+    ifstream in_attr;
+    in_attr.open(csv_attributes);
+    map<string, Attribute> attributes;
+    if( ! in_attr.is_open( ) ){
+        cerr << "Erreur d'ouverture du fichier <" << csv_attributes << ">" << endl;
+    } else {
+        while (!in_attr.eof()) {
+        	string id;
+        	string unit;
+        	string description;
+        	string buffer;
+        	getline(in_attr, id, ';');
+        	getline(in_attr, unit, ';');
+        	getline(in_attr, description, ';');
+        	
+        	//Ignore everything until the end of the line
+        	getline(in_attr, buffer, '\n');
+        	Attribute a(id, unit, description);
+        	attributes.put(id, a);
+        }
+        in_attr.close();
+    }
+    ifstream in_meas;
+    in_meas.open(csv_measurements);
+    multimap<string, Attribute> measurements;
+    if( ! in_meas.is_open( ) ){
+        cerr << "Erreur d'ouverture du fichier <" << csv_measurements << ">" << endl;
+    } else {
+        while (!in_meas.eof()) {
+        	Date date = readDate(in_meas);
+        	string sensor_id;
+        	string attrib_id;
+        	string value;
+        	getline(in_meas, sensor_id, ';');
+        	getline(in_meas, attrib_id, ';');
+        	//Ignore everything until the end of the line
+        	getline(in_attr, buffer, '\n');
+        	Measurement m(date, *(attributes.find(attrib_id)), stod(value));
+        	measurements.put(sensor_id, m);
+        }
+        in_meas.close();
+    }
+    ifstream in_sensors;
+    in_sens.open(csv_sensors);
+    if( ! in_sens.is_open( ) ){
+        cerr << "Erreur d'ouverture du fichier <" << csv_sensors << ">" << endl;
+    } else {
+        while (!in_sens.eof()) {
+        	string sensor_id;
+        	string lat;
+        	string lon;
+        	getline(in_sens, sensor_id, ';');
+        	getline(in_sens, lat, ';');
+        	getline(in_sens, lon, ';');
+        	//Ignore everything until the end of the line
+        	getline(in_attr, buffer, '\n');
+        	list<Measurement> ms(measurements.lower_bound(sensor_id), measurements.upper_bound(sensor_id));
+        	sensors.push_back(Sensor(sensor_id, Point(stod(lat), stod(lon)), ms));
+        }
+        in_sens.close();
+    }
+}
