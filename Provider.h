@@ -11,6 +11,7 @@
 #define PROVIDER_H
 
 //--------------------------------------------------- Interfaces utilisées
+#include "Cleaner.h"
 
 //------------------------------------------------------------- Constantes
 
@@ -30,7 +31,7 @@ public:
 //----------------------------------------------------- Méthodes publiques
 
 //-------------------------------------------- Getters - Setters
-    public list <Cleaner> GetCleaners () const; 
+    list <Cleaner> & GetCleaners () const;
 //------------------------------------------------- Surcharge d'opérateurs
 
 //-------------------------------------------- Constructeurs - destructeur

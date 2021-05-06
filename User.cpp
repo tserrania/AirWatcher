@@ -25,7 +25,7 @@ using namespace std;
 //----------------------------------------------------- Méthodes publiques
 bool User :: isEqual ( string name, string passeword)
 {
-    return ( this.name==name && this.passeword==passeword);
+    return ( this->name==name && this->passeword==passeword);
 }
 
 //-------------------------------------------- Getters - Setters
@@ -45,8 +45,8 @@ User :: User ( const string & name, const string & passeword )
         cout << "Appel au constructeur de <User>" << endl;
     #endif
     
-    this.name = name;
-    this.passeword = passeword;
+    this->name = name;
+    this->passeword = passeword;
 } //----- Fin de User
 
 

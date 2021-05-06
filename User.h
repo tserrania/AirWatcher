@@ -28,14 +28,14 @@ class User
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    public bool isEqual ( string name, string passeword);
+    bool isEqual ( string name, string passeword);
     // Mode d'emploi :
     //
     // Contrat :
     //
     
 //-------------------------------------------- Getters - Setters
-    public string GetName()const ;
+    string GetName()const ;
       
 //------------------------------------------------- Surcharge d'opérateurs
 

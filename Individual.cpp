@@ -26,9 +26,10 @@ using namespace std;
 bool Individual :: isReliable ( ) const
 {
     bool reliable = true;
-    for ( list <Sensor> :: iterator it= sensors.begin(); it != sensors.end(); it++ )
+    list <Sensor> :: iterator it ;
+    for ( it= sensors.begin(); it != sensors.end(); it++ )
     {
-        if !( it -> isValid()) ) reliable= false;
+        if( !( it -> isValid() ) ) reliable= false;
     }
     return reliable; 
 }
@@ -46,23 +47,27 @@ int Individual :: GetPoints () const
 
 void Individual :: SetReliable (bool reliable)
 {
-    this.reliable = reliable;
+    this->reliable = reliable;
+}
+
+void Individual :: incrementerPoints(){
+	points++ ;
 }
 
 //------------------------------------------------- Surcharge d'opérateurs
 
 //-------------------------------------------- Constructeurs - destructeur
-Individual :: Individual (  const string & name, const string & passeword, const string & id, const list <sensor> & sensors, const bool & reliable, const int & point) : User {name, passeword}
+Individual :: Individual ( const string & name, const string & password, const string & id, const list <Sensor> & sensors, bool reliable, int points): User {name, passeword}
 // Algorithme :
 //
 {
     #ifdef MAP
         cout << "Appel au constructeur de <Individual>" << endl;
     #endif
-    this.id=id;
-    this.sensors = sensors;
-    this.reliable= reliable;
-    this.point = point;
+    this->id=id;
+    this->sensors = sensors;
+    this->reliable= reliable;
+    this->points = points;
     
 } //----- Fin de Individual
 

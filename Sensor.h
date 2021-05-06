@@ -12,9 +12,9 @@
 
 //--------------------------------------------------- Interfaces utilisées
 
-#include <iostream>
-using namespace std;
+#include <list>
 #include <string>
+#include "Date.h"
 #include "Point.h"
 #include "Measurement.h"
 #include "Individual.h"
@@ -41,13 +41,19 @@ public:
     // Contrat :
     //
 
-    int getID() const;
+    void setIndividual(const Individual & indiv) ;
     // Mode d'emploi :
     //
     // Contrat :
     //
 
-    int getLocation() const;
+    string getID() const;
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
+
+    Point getLocation() const;
     // Mode d'emploi :
     //
     // Contrat :
@@ -71,19 +77,13 @@ public:
     // Contrat :
     //
 
-    List<Measurement> & getMesures() const;
+    list<Measurement> & getMesures() const;
     // Mode d'emploi :
     //
     // Contrat :
     //
 
-    double getValue(const date & debut, const date & fin, const Attribute & attribute) const;
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
-
-    double * getValues(const date & debut, const date & fin) const;
+    double getValue(const Date & debut, const Date & fin, const Attribute & attribute) const;
     // Mode d'emploi :
     //
     // Contrat :
@@ -102,6 +102,12 @@ public:
     // Contrat :
     //
 
+    bool operator == ( const Sensor & unSensor );
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
+
 
 //-------------------------------------------- Constructeurs - destructeur
     Sensor ( const Sensor & unSensor );
@@ -109,9 +115,8 @@ public:
     //
     // Contrat :
     //
-
-    Sensor ( );
-    // Mode d'emploi :
+    Sensor ( const string ID, const Point & location, const list<Measurement> & mesures );
+    // Mode d'emploi (constructeur de copie) :
     //
     // Contrat :
     //

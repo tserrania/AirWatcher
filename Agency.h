@@ -12,6 +12,9 @@
 
 //--------------------------------------------------- Interfaces utilisées
 
+#include <string>
+#include "User.h"
+
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
@@ -22,7 +25,7 @@
 //
 //------------------------------------------------------------------------
 
-class Agency
+class Agency : public User
 {
 //----------------------------------------------------------------- PUBLIC
 
@@ -34,7 +37,7 @@ public:
 //------------------------------------------------- Surcharge d'opérateurs
 
 //-------------------------------------------- Constructeurs - destructeur
-    Agency ( const string & name, const string & passeword );
+    Agency ( const string & name, const string & password );
     // Mode d'emploi () :
     //
     // Contrat :

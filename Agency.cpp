@@ -13,6 +13,9 @@
 //-------------------------------------------------------- Include système
 
 //------------------------------------------------------ Include personnel
+#include <stdio.h>
+#include <iostream>
+using namespace std;
 #include "Agency.h"
 
 //------------------------------------------------------------- Constantes
@@ -26,7 +29,7 @@
 //------------------------------------------------- Surcharge d'opérateurs
 
 //-------------------------------------------- Constructeurs - destructeur
-Agency :: Agency ( const string & name, const string & passeword ) : User {name, passeword}
+Agency :: Agency ( const string & name, const string & password ) : User {name, passeword}
 // Algorithme :
 //
 {

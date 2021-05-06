@@ -22,7 +22,7 @@
 //----------------------------------------------------- Méthodes publiques
 
 //-------------------------------------------- Getters - Setters
-public list <Cleaner> GetCleaners () const
+list<Cleaner> & Provider::GetCleaners () const
 {
     return cleaners;
 }
@@ -37,8 +37,8 @@ Provider :: Provider ( const string & name, const string & passeword, const stri
     #ifdef MAP
         cout << "Appel au constructeur de <Provider>" << endl;
     #endif
-    this.id = id;
-    this.cleaners = cleaners; 
+    this->id = id;
+    this->cleaners = cleaners;
 } //----- Fin de Provider
 
 

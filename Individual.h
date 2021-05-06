@@ -32,22 +32,24 @@ class Individual : public User
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    public bool isReliable ( ) const;
+	bool isReliable ( ) const;
     // Mode d'emploi :
     //
     // Contrat :
     //
     
 //-------------------------------------------- Getters - Setters
-    public list<Sensor> GetSensors()const ;
+    list<Sensor> GetSensors()const ;
+
+    int GetPoints () const ;
     
-    public int GetPoints () const ;
+    void SetReliable (bool reliable);
     
-    public void SetReliable (bool reliable);
+    void incrementerPoints() ;
 //------------------------------------------------- Surcharge d'opérateurs
 
 //-------------------------------------------- Constructeurs - destructeur
-    Individual ( const string & name, const string & passeword, const string & id, const list <sensor> & sensors, const bool & reliable, const int & point);
+    Individual ( const string & name, const string & password, const string & id, const list <Sensor> & sensors, bool reliable, int points);
     // Mode d'emploi () :
     //
     // Contrat :
