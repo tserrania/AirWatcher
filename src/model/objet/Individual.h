@@ -13,7 +13,7 @@
 //--------------------------------------------------- Interfaces utilisées
 #include <string>
 #include "model/objet/User.h"
-#include"model/objet/Sensor.h"
+#include "model/objet/Sensor.h"
 using namespace std;
 
 //------------------------------------------------------------- Constantes

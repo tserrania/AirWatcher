@@ -39,7 +39,11 @@ public:
       
 //------------------------------------------------- Surcharge d'opérateurs
 
+	User & operator =(const User & unUser);
+
 //-------------------------------------------- Constructeurs - destructeur
+
+	User (const User & unUser);
     User ( const string & name, const string & passeword );
     // Mode d'emploi () :
     //

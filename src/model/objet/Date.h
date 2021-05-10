@@ -8,7 +8,6 @@
 //---------- Interface de la classe <Date> (fichier Date.h) ----------------
 #if ! defined ( DATE_H )
 #define DATE_H
-#include <string>
 
 //--------------------------------------------------- Interfaces utilisées
 
@@ -64,6 +63,10 @@ public:
     //
     // Contrat :
     //
+    
+    bool operator<=(const Date & unDate);
+    
+    bool operator>=(const Date & unDate);
 
 //-------------------------------------------- Constructeurs - destructeur
     Date ( const Date & unDate );
@@ -73,16 +76,16 @@ public:
     //
 
     Date ( int a,int m,int j,int h,int mi,int s);
-    // Mode d'emploi (constructeur de copie) :
+    // Mode d'emploi:
     //
     // Contrat :
     //
 
-    Date ( );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
+    //~ Date ( );
+    //~ // Mode d'emploi :
+    //~ //
+    //~ // Contrat :
+    //~ //
 
     virtual ~Date ( );
     // Mode d'emploi :

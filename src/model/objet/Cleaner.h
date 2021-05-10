@@ -53,6 +53,8 @@ public:
 
 //------------------------------------------------- Surcharge d'opérateurs
 
+	Cleaner & operator =(const Cleaner & unCleaner);
+
 
 //-------------------------------------------- Constructeurs - destructeur
     Cleaner ( const Cleaner & unCleaner );

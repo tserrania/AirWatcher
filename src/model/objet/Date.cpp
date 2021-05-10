@@ -11,11 +11,11 @@
 
 //-------------------------------------------------------- Include système
 #include <iostream>
-#include <string>
 using namespace std;
 
 //------------------------------------------------------ Include personnel
 #include "model/objet/Date.h"
+
 
 //------------------------------------------------------------- Constantes
 
@@ -61,6 +61,51 @@ bool Date::operator == ( const Date & unDate )
 	return false;
 } //----- Fin de operator ==
 
+bool Date::operator <=(const Date & unDate){
+	if(this->annee < unDate.annee){
+		return(true);
+	}else if(this->annee > unDate.annee){
+		return(false);
+	}else{
+		if(this->mois < unDate.mois){
+			return(true);
+		}else if(this->mois > unDate.mois){
+			return(false);
+		}else{
+			if(this->jour < unDate.jour){
+				return(true);
+			}else if(this->jour > unDate.jour){
+				return(false);
+			}else{
+				if(this->heure < unDate.heure){
+					return(true);
+				}else if(this->heure > unDate.heure){
+					return(false);
+				}else{
+					if(this->min < unDate.min){
+						return(true);
+					}else if(this->min > unDate.min){
+						return(false);
+					}else{
+						if(this->sec < unDate.sec){
+							return(true);
+						}else if(this->sec > unDate.sec){
+							return(false);
+						}else{
+							return(true);
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+bool Date::operator >=(const Date & unDate){
+	return(!(operator <=(unDate)) || operator ==(unDate));
+}
+
+
 
 //-------------------------------------------- Constructeurs - destructeur
 Date::Date ( const Date & unDate )
@@ -95,14 +140,14 @@ Date::Date ( int a,int m,int j,int h,int mi,int s )
 } //----- Fin de Date (constructeur de copie)
 
 
-Date::Date ( )
-// Algorithme :
-//
-{
-#ifdef MAP
-    cout << "Appel au constructeur de <Date>" << endl;
-#endif
-} //----- Fin de Date
+//~ Date::Date ( )
+//~ // Algorithme :
+//~ //
+//~ {
+//~ #ifdef MAP
+    //~ cout << "Appel au constructeur de <Date>" << endl;
+//~ #endif
+//~ } //----- Fin de Date
 
 
 Date::~Date ( )

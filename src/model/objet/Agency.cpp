@@ -28,8 +28,23 @@ using namespace std;
 
 //------------------------------------------------- Surcharge d'opérateurs
 
+Agency & Agency::operator =(const Agency & unAgency){
+	if(this!=&unAgency){
+		name=unAgency.name;
+		passeword=unAgency.passeword;
+	}
+	return(*this);
+}
+
 //-------------------------------------------- Constructeurs - destructeur
-Agency :: Agency ( const string & name, const string & password ) : User {name, passeword}
+
+Agency::Agency(const Agency & unAgency):User(unAgency.name,unAgency.passeword)
+{
+	#ifdef MAP
+        cout << "Appel au constructeur de copie de <Agency>" << endl;
+    #endif
+}
+Agency :: Agency ( const string & name, const string & password ) : User (name, passeword)
 // Algorithme :
 //
 {

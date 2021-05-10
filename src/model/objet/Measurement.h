@@ -15,6 +15,7 @@
 using namespace std;
 
 #include "model/objet/Attribute.h"
+#include "model/objet/Date.h"
 
 //------------------------------------------------------------- Constantes
 

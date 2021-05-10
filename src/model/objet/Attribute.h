@@ -50,6 +50,8 @@ public:
     //
     // Contrat :
     //
+    
+    bool operator ==(const Attribute & unAttribute){return ID==unAttribute.ID;}
 
 
 //-------------------------------------------- Constructeurs - destructeur

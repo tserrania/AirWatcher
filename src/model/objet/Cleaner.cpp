@@ -49,33 +49,35 @@ Date Cleaner::getStop()
 
 //------------------------------------------------- Surcharge d'opérateurs
 
+Cleaner & Cleaner::operator =(const Cleaner & unCleaner){
+	if(this!=&unCleaner){
+		id=unCleaner.id;
+		provider=unCleaner.provider;
+		location=unCleaner.location;
+		start=unCleaner.start;
+		stop=unCleaner.stop;
+	}
+	return(*this);
+}
+
 //-------------------------------------------- Constructeurs - destructeur
-Cleaner::Cleaner ( const Cleaner & unCleaner )
+Cleaner::Cleaner ( const Cleaner & unCleaner ):id(unCleaner.id),provider(unCleaner.provider),location(unCleaner.location),
+start(unCleaner.start),stop(unCleaner.stop)
 // Algorithme :
 //
 {
 #ifdef MAP
     cout << "Appel au constructeur de copie de <Cleaner>" << endl;
 #endif
-    id = unCleaner.id;
-    provider = unCleaner.provider;
-    location = unCleaner.location;
-    start = unCleaner.start;
-    stop = unCleaner.stop;
 } //----- Fin de Cleaner (constructeur de copie)
 
-Cleaner::Cleaner (string ID, Provider pr,Point po,Date st,Date sp )
+Cleaner::Cleaner (string ID, Provider pr,Point po,Date st,Date sp ):id(ID),provider(pr),location(po),start(st),stop(sp)
 // Algorithme :
 //
 {
 #ifdef MAP
     cout << "Appel au constructeur de <Cleaner>" << endl;
 #endif
-    id = ID;
-    provider = pr;
-    location = po;
-    start = st;
-    stop = sp;
 } //----- Fin de Cleaner
 
 

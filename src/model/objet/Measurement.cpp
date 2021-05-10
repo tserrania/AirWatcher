@@ -16,7 +16,6 @@ using namespace std;
 
 //------------------------------------------------------ Include personnel
 #include "model/objet/Measurement.h"
-#include "model/objet/Date.h"
 
 //------------------------------------------------------------- Constantes
 

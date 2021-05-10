@@ -29,16 +29,25 @@ list<Cleaner> & Provider::GetCleaners () const
 
 //------------------------------------------------- Surcharge d'opérateurs
 
+Provider & Provider::operator =(const Provider & unProvider){
+	if(this!=&unProvider){
+		name=unProvider.name;
+		passeword=unProvider.passeword;
+		id=unProvider.id;
+		cleaners=unProvider.cleaners;
+	}
+	return(*this);
+}
+
 //-------------------------------------------- Constructeurs - destructeur
-Provider :: Provider ( const string & name, const string & passeword, const string & id, const list <Cleaner> & cleaners ) : User {name, passeword}
+Provider :: Provider ( const string & name, const string & passeword, const string & ID, const list <Cleaner> & Cleaners ) : User (name, passeword),
+id(ID), cleaners(Cleaners)
 // Algorithme :
 //
 {
     #ifdef MAP
         cout << "Appel au constructeur de <Provider>" << endl;
     #endif
-    this->id = id;
-    this->cleaners = cleaners;
 } //----- Fin de Provider
 
 

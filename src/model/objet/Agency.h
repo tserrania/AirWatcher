@@ -36,7 +36,11 @@ public:
       
 //------------------------------------------------- Surcharge d'opérateurs
 
+	Agency & operator=(const Agency & unAgency);
+
+
 //-------------------------------------------- Constructeurs - destructeur
+	Agency (const Agency & unAgency);
     Agency ( const string & name, const string & password );
     // Mode d'emploi () :
     //

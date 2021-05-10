@@ -36,17 +36,29 @@ string User :: GetName () const
 
 //------------------------------------------------- Surcharge d'opérateurs
 
+User & User::operator =(const User & unUser){
+	if(this!=&unUser){
+		name=unUser.name;
+		passeword=unUser.passeword;
+	}
+	return(*this);
+}
+
 //-------------------------------------------- Constructeurs - destructeur
-User :: User ( const string & name, const string & passeword )
+
+User::User(const User & unUser):name(unUser.name),passeword(unUser.passeword)
+{
+	#ifdef MAP
+        cout << "Appel au constructeur de copie de <User>" << endl;
+    #endif
+}
+User :: User ( const string & Name, const string & Passeword ):name(Name), passeword(Passeword)
 // Algorithme :
 //
 {
     #ifdef MAP
         cout << "Appel au constructeur de <User>" << endl;
     #endif
-    
-    this->name = name;
-    this->passeword = passeword;
 } //----- Fin de User
 
 

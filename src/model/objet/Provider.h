@@ -34,7 +34,12 @@ public:
     list<Cleaner> & GetCleaners () const;
 //------------------------------------------------- Surcharge d'opérateurs
 
+	Provider & operator =(const Provider & unProvider);
+
 //-------------------------------------------- Constructeurs - destructeur
+
+	Provider(const Provider & unProvider);
+	
     Provider ( const string & name, const string & passeword, const string & id, const list <Cleaner> & cleaners );
     // Mode d'emploi () :
     //

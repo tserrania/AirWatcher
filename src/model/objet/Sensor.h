@@ -18,6 +18,7 @@
 #include "model/objet/Point.h"
 #include "model/objet/Measurement.h"
 #include "model/objet/Individual.h"
+using namespace std;
 
 //------------------------------------------------------------- Constantes
 

@@ -75,18 +75,20 @@ Sensor & Sensor::operator = ( const Sensor & unSensor )
 // Algorithme :
 //
 {
-	this->ID = unSensor.ID ;
-	this->location = unSensor.location ;
-	this->mesures = unSensor.mesures ;
+	if(this!=&unSensor){
+		this->ID = unSensor.ID ;
+		this->location = unSensor.location ;
+		this->mesures = unSensor.mesures ;
+	}
 
-	return this ;
+	return *this ;
 } //----- Fin de operator =
 
 bool Sensor::operator == ( const Sensor & unSensor )
 // Algorithme :
 //
 {
-	if(ID == unSensor.ID && location == unSensor.location && mesures == unSensor.mesures){
+	if(ID == unSensor.ID){
 		return true ;
 	}
 	return false ;
@@ -94,28 +96,22 @@ bool Sensor::operator == ( const Sensor & unSensor )
 
 
 //-------------------------------------------- Constructeurs - destructeur
-Sensor::Sensor ( const Sensor & unSensor )
+Sensor::Sensor ( const Sensor & unSensor ):ID(unSensor.ID),location(unSensor.location),mesures(unSensor.mesures)
 // Algorithme :
 //
 {
 #ifdef MAP
     cout << "Appel au constructeur de copie de <Sensor>" << endl;
 #endif
-    this->ID = unSensor.ID ;
-    this->location = unSensor.location ;
-    this->mesures = unSensor.mesures ;
 } //----- Fin de Sensor (constructeur de copie)
 
-Sensor::Sensor ( const string ID, const Point & location, const list<Measurement> & mesures )
+Sensor::Sensor ( const string unID, const Point & Location, const list<Measurement> & Mesures ):ID(unID),location(Location),mesures(Mesures)
 // Algorithme :
 //
 {
 #ifdef MAP
     cout << "Appel au constructeur de copie de <Sensor>" << endl;
 #endif
-    this->ID = ID ;
-    this->location = location ;
-    this->mesures = mesures ;
 } //----- Fin de Sensor (constructeur de copie)
 
 

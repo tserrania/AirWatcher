@@ -57,15 +57,14 @@ void Individual :: incrementerPoints(){
 //------------------------------------------------- Surcharge d'opérateurs
 
 //-------------------------------------------- Constructeurs - destructeur
-Individual :: Individual ( const string & name, const string & password, const string & id, const list <Sensor> & sensors, bool reliable, int points): User {name, passeword}
+Individual :: Individual ( const string & name, const string & password, const string & ID, const list <Sensor> & Sensors, bool reliable, int points): 
+User (name, password), id(ID), sensors(Sensors)
 // Algorithme :
 //
 {
     #ifdef MAP
         cout << "Appel au constructeur de <Individual>" << endl;
     #endif
-    this->id=id;
-    this->sensors = sensors;
     this->reliable= reliable;
     this->points = points;
     
