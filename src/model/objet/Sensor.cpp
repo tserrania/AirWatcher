@@ -24,7 +24,7 @@ using namespace std;
 //----------------------------------------------------- Méthodes publiques
 
 void Sensor::setIndividual(const Individual & indiv) {
-	individual = indiv ;
+	individual = &indiv ;
 }
 
 string Sensor::getID() const{
@@ -65,7 +65,7 @@ double Sensor::getValue(const Date & debut, const Date & fin, const Attribute & 
 }
 
 void Sensor::incrementerPointsUtilisateur(){
-	individual.incrementerPoints() ;
+	individual->incrementerPoints() ;
 }
 
 
@@ -76,6 +76,7 @@ Sensor & Sensor::operator = ( const Sensor & unSensor )
 //
 {
 	if(this!=&unSensor){
+		this->individual=unSensor.individual;s
 		this->ID = unSensor.ID ;
 		this->location = unSensor.location ;
 		this->mesures = unSensor.mesures ;
@@ -96,22 +97,26 @@ bool Sensor::operator == ( const Sensor & unSensor )
 
 
 //-------------------------------------------- Constructeurs - destructeur
-Sensor::Sensor ( const Sensor & unSensor ):ID(unSensor.ID),location(unSensor.location),mesures(unSensor.mesures)
+Sensor::Sensor ( const Sensor & unSensor ):ID(unSensor.ID),location(unSensor.location), valid(unSensor.valid),
+mesures(unSensor.mesures)
 // Algorithme :
 //
 {
 #ifdef MAP
     cout << "Appel au constructeur de copie de <Sensor>" << endl;
 #endif
+	this->individual = new Individual(*(unSensor.individual));
 } //----- Fin de Sensor (constructeur de copie)
 
-Sensor::Sensor ( const string unID, const Point & Location, const list<Measurement> & Mesures ):ID(unID),location(Location),mesures(Mesures)
+Sensor::Sensor ( const string & unID, const Point & Location, const string & Valid const list<Measurement> & Mesures, const Individual & unIndiv )
+:ID(unID),location(Location),valid(Valid), mesures(Mesures)
 // Algorithme :
 //
 {
 #ifdef MAP
     cout << "Appel au constructeur de copie de <Sensor>" << endl;
 #endif
+	this->individual = unIndiv;
 } //----- Fin de Sensor (constructeur de copie)
 
 

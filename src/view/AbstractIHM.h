@@ -37,7 +37,7 @@ public:
     // Contrat :
     //
     
-    void menuConnexion() const;
+    static void menuConnexion();
     
     int recupererChoix() const;
     

@@ -30,6 +30,8 @@ using namespace std;
 //
 //------------------------------------------------------------------------
 
+class Individual;
+
 class Sensor 
 {
 //----------------------------------------------------------------- PUBLIC
@@ -116,7 +118,7 @@ public:
     //
     // Contrat :
     //
-    Sensor ( const string ID, const Point & location, const list<Measurement> & mesures );
+    Sensor ( const string ID, const Point & location, const list<Measurement> & mesures, const Individual *unIndiv=nullptr);
     // Mode d'emploi (constructeur de copie) :
     //
     // Contrat :
@@ -139,7 +141,7 @@ protected:
 	Point location ;
 	string valid ;
 	list<Measurement> mesures ;
-	Individual individual ;
+	Individual *individual ;
 
 };
 

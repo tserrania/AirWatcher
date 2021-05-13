@@ -54,6 +54,12 @@ public:
     //
     // Contrat :
     //
+    
+     Individual ( const string & name, const string & password, const string & id);
+    // Mode d'emploi () :
+    //
+    // Contrat :
+    //
 
 
     virtual ~Individual ( );

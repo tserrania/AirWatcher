@@ -13,7 +13,6 @@
 //--------------------------------------------------- Interfaces utilisées
 
 #include "AbstractIHM.h"
-#include "Attribute.h"
 #include "model/objet/User.h"
 #include <map>
 using namespace std;

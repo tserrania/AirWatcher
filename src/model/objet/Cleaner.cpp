@@ -71,7 +71,7 @@ start(unCleaner.start),stop(unCleaner.stop)
 #endif
 } //----- Fin de Cleaner (constructeur de copie)
 
-Cleaner::Cleaner (string ID, Provider pr,Point po,Date st,Date sp ):id(ID),provider(pr),location(po),start(st),stop(sp)
+Cleaner::Cleaner (string ID, Provider *pr,Point po,Date st,Date sp ):id(ID),provider(pr),location(po),start(st),stop(sp)
 // Algorithme :
 //
 {

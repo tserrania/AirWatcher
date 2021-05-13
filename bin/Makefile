@@ -2,6 +2,7 @@
 # make exec pour l'interface
 # Ajouter G=oui a la fin pour compiler avec l'option -g, et MAP=oui pour l'option -D MAP
 
+
 ECHO = @echo
 RM = @rm
 RMFLAGS = -f

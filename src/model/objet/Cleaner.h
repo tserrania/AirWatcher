@@ -27,6 +27,8 @@
 //
 //------------------------------------------------------------------------
 
+class Provider;
+
 class Cleaner 
 {
 //----------------------------------------------------------------- PUBLIC
@@ -61,7 +63,7 @@ public:
     // Mode d'emploi (constructeur de copie) :
     // Construit une copie d'un cleaner identique à un autre
 
-    Cleaner ( string Id,Provider provider,Point location,Date start,Date stop );
+    Cleaner ( string Id,Provider *provider,Point location,Date start,Date stop );
     // Mode d'emploi :
     // Construit un cleaner avec ses attributs
 
@@ -74,7 +76,7 @@ public:
 protected:
 //----------------------------------------------------- Méthodes protégées
     string id;
-    Provider provider;
+    Provider *provider;
     Point location;
     Date start;
     Date stop;

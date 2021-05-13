@@ -70,6 +70,14 @@ User (name, password), id(ID), sensors(Sensors)
     
 } //----- Fin de Individual
 
+Individual::Individual(const string & name, const string & password, const string & ID):User(name,password), id(ID){
+	#ifdef MAP
+        cout << "Appel au constructeur de <Individual>" << endl;
+    #endif
+    reliable=true;
+    poins=0;
+}
+
 
 Individual::~Individual ( )
 // Algorithme :

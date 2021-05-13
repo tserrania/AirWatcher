@@ -28,7 +28,7 @@ using namespace std;
 //{
 //} //----- Fin de Méthode
 
-void AbstractIHM::menuConnexion() const{
+void AbstractIHM::menuConnexion(){
 	cout<<"identifiant: "<<endl;
 	cout<<"mot de passe: "<<endl;
 }
