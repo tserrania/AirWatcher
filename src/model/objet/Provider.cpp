@@ -22,7 +22,7 @@
 //----------------------------------------------------- Méthodes publiques
 
 //-------------------------------------------- Getters - Setters
-list<Cleaner> & Provider::GetCleaners () const
+const list<Cleaner> & Provider::GetCleaners () const
 {
     return cleaners;
 }

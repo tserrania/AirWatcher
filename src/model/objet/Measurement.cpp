@@ -40,7 +40,7 @@ Measurement & Measurement::operator = ( const Measurement & unMeasurement )
 		value=unMeasurement.value;
 	}
 
-	return this ;
+	return *this ;
 } //----- Fin de operator =
 
 
@@ -55,7 +55,7 @@ Measurement::Measurement ( const Measurement & m ):timeStamp(m.timeStamp), attri
 } //----- Fin de Measurement (constructeur de copie)
 
 
-Measurement::Measurement (Date date, Attribute & unAttribut, double v):timeStamp(date),attribut(unAttribut), value(v)
+Measurement::Measurement (const Date date, const Attribute & unAttribut, double v):timeStamp(date),attribut(unAttribut), value(v)
 // Algorithme :
 //
 {

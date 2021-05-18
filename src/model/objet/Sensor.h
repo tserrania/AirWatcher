@@ -17,7 +17,6 @@
 #include "model/objet/Date.h"
 #include "model/objet/Point.h"
 #include "model/objet/Measurement.h"
-#include "model/objet/Individual.h"
 using namespace std;
 
 //------------------------------------------------------------- Constantes
@@ -44,7 +43,7 @@ public:
     // Contrat :
     //
 
-    void setIndividual(const Individual & indiv) ;
+    void setIndividual(const Individual *indiv) ;
     // Mode d'emploi :
     //
     // Contrat :
@@ -80,7 +79,7 @@ public:
     // Contrat :
     //
 
-    list<Measurement> & getMesures() const;
+    const list<Measurement> & getMesures() const;
     // Mode d'emploi :
     //
     // Contrat :
@@ -118,7 +117,7 @@ public:
     //
     // Contrat :
     //
-    Sensor ( const string ID, const Point & location, const list<Measurement> & mesures, const Individual *unIndiv=nullptr);
+    Sensor ( const string & ID, const Point & location, const string & Valid, const list<Measurement> & mesures, const Individual *unIndiv=nullptr);
     // Mode d'emploi (constructeur de copie) :
     //
     // Contrat :

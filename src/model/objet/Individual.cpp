@@ -10,8 +10,7 @@
 
 //---------------------------------------------------------------- INCLUDE
 
-//-------------------------------------------------------- Include système
-#include <stdio.h>
+//-------------------------------------------------------- Include systèmes
 #include <iostream>
 using namespace std;
 
@@ -26,10 +25,12 @@ using namespace std;
 bool Individual :: isReliable ( ) const
 {
     bool reliable = true;
-    list <Sensor> :: iterator it ;
-    for ( it= sensors.begin(); it != sensors.end(); it++ )
+    list <Sensor> :: const_iterator it ;
+    for ( it= sensors.cbegin(); it != sensors.end(); it++ )
     {
-        if( !( it -> isValid() ) ) reliable= false;
+        if(it->isValid()!="valide"){
+			 reliable= false;
+		 }
     }
     return reliable; 
 }
@@ -75,7 +76,7 @@ Individual::Individual(const string & name, const string & password, const strin
         cout << "Appel au constructeur de <Individual>" << endl;
     #endif
     reliable=true;
-    poins=0;
+    points=0;
 }
 
 

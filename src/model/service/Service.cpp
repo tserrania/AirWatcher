@@ -10,8 +10,8 @@
 //---------------------------------------------------------------- INCLUDE
 
 //-------------------------------------------------------- Include système
-#include <string>
 #include <iostream>
+#include <fstream>
 #include <map>
 #include "model/objet/Measurement.h"
 #include "model/objet/Attribute.h"
@@ -102,7 +102,7 @@ void Service::readSensors(string& csv_attributes, string& csv_measurements, stri
         	//Ignore everything until the end of the line
         	getline(in_attr, buffer, '\n');
         	Attribute a(id);
-        	attributes.put(id, a);
+        	attributes.insert(pair<string,Attribute>(id, a));
         }
         in_attr.close();
     }
@@ -122,8 +122,8 @@ void Service::readSensors(string& csv_attributes, string& csv_measurements, stri
         	getline(in_meas, attrib_id, ';');
         	//Ignore everything until the end of the line
         	getline(in_attr, buffer, '\n');
-        	Measurement m(date, *(attributes.find(attrib_id)), stod(value));
-        	measurements.put(sensor_id, m);
+        	Measurement m(date, attributes.find(attrib_id)->second, stod(value));
+        	measurements.insert(pair<string,Measurement>(sensor_id, m));
         }
         in_meas.close();
     }
@@ -143,7 +143,7 @@ void Service::readSensors(string& csv_attributes, string& csv_measurements, stri
         	//Ignore everything until the end of the line
         	getline(in_attr, buffer, '\n');
         	list<Measurement> ms(measurements.lower_bound(sensor_id), measurements.upper_bound(sensor_id));
-        	sensors.push_back(Sensor(sensor_id, Point(stod(lat), stod(lon)), ms));
+        	sensors.push_back(Sensor(sensor_id, Point(stod(lat), stod(lon)),"valid", ms));
         }
         in_sens.close();
     }

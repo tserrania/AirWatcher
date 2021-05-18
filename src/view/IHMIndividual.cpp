@@ -32,11 +32,11 @@ void IHMIndividual::afficherMenu() const{
 	cout<<"Veuillez taper: "<<endl;
 	cout<<"		1 pour obtenir votre nombre de points."<<endl;
 	cout<<"		0 pour quitter."<<endl;
-	cout<<endl;
 }
 
 void IHMIndividual::afficherPoints(int points) const{
 	cout<<"Vous avez obtenu un total de "<<points<<" points."<<endl;
+	cout<<endl;
 }
 
 

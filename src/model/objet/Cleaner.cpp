@@ -15,11 +15,6 @@ using namespace std;
 
 //------------------------------------------------------ Include personnel
 #include "model/objet/Cleaner.h"
-#include <string>
-#include "model/objet/Point.h"
-#include "model/objet/Provider.h"
-#include "model/objet/Sensor.h"
-#include "model/objet/Date.h"
 
 //------------------------------------------------------------- Constantes
 
@@ -37,7 +32,7 @@ Point Cleaner::getLocation()
     return location;
 }
 
-Date Cleaner::getStart();
+Date Cleaner::getStart()
 {
     return start;
 }

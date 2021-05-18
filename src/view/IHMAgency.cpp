@@ -32,7 +32,6 @@ void IHMAgency::afficherMenu() const{
 	cout<<"Veuillez taper: "<<endl;
 	cout<<"		1 pour vérifier si un capteur est défectueux."<<endl;
 	cout<<"		0 pour quitter."<<endl;
-	cout<<endl;
 }
 
 void IHMAgency::selectionCapteurDefectueux() const{
@@ -49,6 +48,7 @@ void IHMAgency::afficherCapteurDefectueux(const string & etatCapteur) const{
 	}else if(etatCapteur=="incertain"){
 		cout<<"Le capteur a un comportement anormal. Des vérifications supplémentaires sont nécessaires."<<endl;
 	}
+	cout<<endl;
 }
 
 

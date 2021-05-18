@@ -11,7 +11,10 @@
 #define PROVIDER_H
 
 //--------------------------------------------------- Interfaces utilisées
+#include <list>
 #include "model/objet/Cleaner.h"
+#include "model/objet/User.h"
+using namespace std;
 
 //------------------------------------------------------------- Constantes
 
@@ -23,7 +26,7 @@
 //
 //------------------------------------------------------------------------
 
-class Provider
+class Provider : public User
 {
 //----------------------------------------------------------------- PUBLIC
 
@@ -31,7 +34,7 @@ public:
 //----------------------------------------------------- Méthodes publiques
 
 //-------------------------------------------- Getters - Setters
-    list<Cleaner> & GetCleaners () const;
+    const list<Cleaner> & GetCleaners () const;
 //------------------------------------------------- Surcharge d'opérateurs
 
 	Provider & operator =(const Provider & unProvider);

@@ -16,15 +16,18 @@ using namespace std;
 
 //------------------------------------------------------ Include personnel
 #include "model/objet/Sensor.h"
-
+#include "model/objet/Individual.h"
 //------------------------------------------------------------- Constantes
 
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
 
-void Sensor::setIndividual(const Individual & indiv) {
-	individual = &indiv ;
+void Sensor::setIndividual(const Individual *indiv) {
+	if(individual!=indiv){
+		delete individual;
+		individual = new Individual(*indiv);
+	}
 }
 
 string Sensor::getID() const{
@@ -43,14 +46,14 @@ string Sensor::isValid() const{
 	return valid ;
 }
 
-list<Measurement> & Sensor::getMesures() const{
+const list<Measurement> & Sensor::getMesures() const{
 	return mesures ;
 }
 
 double Sensor::getValue(const Date & debut, const Date & fin, const Attribute & attribute) const{
 	double somme = 0 ;
 	int cpt = 0 ;
-	list<Measurement> :: iterator it ;
+	list<Measurement> :: const_iterator it ;
 	for ( it = mesures.begin(); it != mesures.end(); it++ )
 	{
 		if(it->getDate() >= debut && it->getDate() <= fin && it->getAttribute() == attribute){
@@ -76,7 +79,8 @@ Sensor & Sensor::operator = ( const Sensor & unSensor )
 //
 {
 	if(this!=&unSensor){
-		this->individual=unSensor.individual;s
+		delete individual;
+		this->individual= new Individual(*(unSensor.individual));
 		this->ID = unSensor.ID ;
 		this->location = unSensor.location ;
 		this->mesures = unSensor.mesures ;
@@ -108,7 +112,7 @@ mesures(unSensor.mesures)
 	this->individual = new Individual(*(unSensor.individual));
 } //----- Fin de Sensor (constructeur de copie)
 
-Sensor::Sensor ( const string & unID, const Point & Location, const string & Valid const list<Measurement> & Mesures, const Individual & unIndiv )
+Sensor::Sensor ( const string & unID, const Point & Location, const string & Valid, const list<Measurement> & Mesures, const Individual *unIndiv )
 :ID(unID),location(Location),valid(Valid), mesures(Mesures)
 // Algorithme :
 //
@@ -116,7 +120,7 @@ Sensor::Sensor ( const string & unID, const Point & Location, const string & Val
 #ifdef MAP
     cout << "Appel au constructeur de copie de <Sensor>" << endl;
 #endif
-	this->individual = unIndiv;
+	this->individual = new Individual(*unIndiv);
 } //----- Fin de Sensor (constructeur de copie)
 
 
@@ -127,6 +131,9 @@ Sensor::~Sensor ( )
 #ifdef MAP
     cout << "Appel au destructeur de <Sensor>" << endl;
 #endif
+	if(individual!=nullptr){
+		delete individual;
+	}
 } //----- Fin de ~Sensor
 
 

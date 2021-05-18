@@ -39,11 +39,11 @@ public:
     // Contrat :
     //
     
-    Date getDate(){return timeStamp;}
+    Date getDate() const{return timeStamp;}
     
-    Attribute getAttribute(){return attribut;}
+    Attribute getAttribute() const{return attribut;}
     
-    double getValue(){return value;}
+    double getValue() const{return value;}
 
 
 //------------------------------------------------- Surcharge d'opérateurs
@@ -61,7 +61,7 @@ public:
     // Contrat :
     //
 
-    Measurement (Date date, Attribute & unAttribut, double v);
+    Measurement (const Date & date, const Attribute & unAttribut, double v);
     // Mode d'emploi :
     //
     // Contrat :

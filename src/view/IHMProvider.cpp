@@ -32,7 +32,6 @@ void IHMProvider::afficherMenu() const{
 	cout<<"Veuillez taper: "<<endl;
 	cout<<"		1 pour mesurer l'efficacité d'un capteur."<<endl;
 	cout<<"		0 pour quitter."<<endl;
-	cout<<endl;
 }
 
 void IHMProvider::selectionCleaner() const{
@@ -40,7 +39,15 @@ void IHMProvider::selectionCleaner() const{
 }
 
 void IHMProvider::afficherEfficacite(const map<Attribute,double> & pourcentages, double rayonAction) const{
+	cout<<"Le pourcentage d'amélioration moyen par polluant est: "<<endl;
+	
+	map<Attribute, double>::const_iterator it;
+	for(it=pourcentages.begin();it!=pourcentages.end();it++){
+		cout<<it->first<<": "<<it->second<<"%"<<endl;
+	}
+	cout<<endl;
 	cout<<"Le purificateur a un rayon d'action de "<<rayonAction<<" mètres."<<endl;
+	cout<<endl;
 }
 
 

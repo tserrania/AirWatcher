@@ -11,7 +11,6 @@
 #include <string>
 #include <list>
 #include "model/objet/Point.h"
-#include "model/objet/Provider.h"
 #include "model/objet/Sensor.h"
 #include "model/objet/Date.h"
 

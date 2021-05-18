@@ -26,7 +26,7 @@ double Point::getLatitude() { return latitude; }
 
 double Point::getLongitude() { return longitude; }
 
-double Point::getDistance(Point& unPoint)
+double Point::getDistance(const Point& unPoint) const
 // Algorithme : 
 // Calcul de la distance avec la formule de Haversine
 {

@@ -11,8 +11,13 @@
 
 //--------------------------------------------------- Interfaces utilisées
 #include <list>
-
+#include <string>
 #include "model/objet/Cleaner.h"
+#include "model/objet/Date.h"
+#include "model/objet/User.h"
+#include "model/objet/Sensor.h"
+
+using namespace std;
 
 //------------------------------------------------------------- Constantes
 

@@ -36,7 +36,7 @@ public:
     // Mode d'emploi :
     //	Retourne la longitude de ce point
     
-    double getDistance(Point& unPoint);
+    double getDistance(const Point& unPoint) const;
     // Mode d'emploi :
     //	Calcule la distance avec un autre point
 
