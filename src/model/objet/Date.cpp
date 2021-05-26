@@ -49,6 +49,17 @@ int Date::getAnnee(){
 
 
 //------------------------------------------------- Surcharge d'opérateurs
+Date & Date::operator =(const Date & unDate){
+	if(this!=&unDate){
+		heure=unDate.heure;
+		min=unDate.min;
+		sec=unDate.sec;
+		jour=unDate.jour;
+		mois=unDate.mois;
+		annee=unDate.annee;
+	}
+}
+
 bool Date::operator == ( const Date & unDate )
 // Algorithme :
 //

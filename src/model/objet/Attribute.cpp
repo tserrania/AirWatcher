@@ -38,6 +38,11 @@ Attribute & Attribute::operator = ( const Attribute & unAttribute )
 	return(*this);
 } //----- Fin de operator =
 
+ostream & operator <<(ostream & out, const Attribute & unAttribute){
+	out<<unAttribute.ID;
+	return(out);
+}
+
 
 //-------------------------------------------- Constructeurs - destructeur
 Attribute::Attribute ( const Attribute & unAttribute ):ID(unAttribute.ID), unit(unAttribute.unit), description(unAttribute.description)
