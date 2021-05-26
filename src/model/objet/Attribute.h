@@ -53,6 +53,7 @@ public:
     
     bool operator ==(const Attribute & unAttribute){return ID==unAttribute.ID;}
 
+    friend ostream & operator <<(ostream & out, const Attribute & unAttribute);
 
 //-------------------------------------------- Constructeurs - destructeur
     Attribute ( const Attribute & unAttribute);
