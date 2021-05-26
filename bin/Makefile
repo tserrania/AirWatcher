@@ -15,7 +15,7 @@ EDL = g++
 CCFLAGS = -ansi -pedantic -std=c++11 -I $(SOURCE)
 LDFLAGS = -Wall -pedantic -std=c++11
 
-INTERFACE = $(CONTROLLER) $(OBJET) $(SERVICE) $(DATA) $(VIEW)
+INTERFACE = $(CONTROLLER) $(OBJET) $(SERVICE) $(VIEW)
 OBJETS = $(INTERFACE:.h=.o)
 EXE = exec
 EFFACE = clean
@@ -23,7 +23,6 @@ EFFACE = clean
 CONTROLLER = Main.h
 OBJET = Agency.h Attribute.h Cleaner.h Date.h Individual.h Measurement.h Point.h Provider.h Sensor.h User.h
 SERVICE = Service.h
-DATA = Data.h
 VIEW = AbstractIHM.h IHMAgency.h IHMIndividual.h IHMProvider.h
 
 Main=controller/Main
@@ -40,8 +39,6 @@ Sensor=model/objet/Sensor
 User=model/objet/User
 
 Service=model/service/Service
-
-Data=model/data/Data
 
 AbstractIHM=view/AbstractIHM
 IHMAgency=view/IHMAgency
@@ -99,9 +96,6 @@ User.o:$(User).cpp
 Service.o:$(Service).cpp
 	$(run)
 
-Data.o:$(Data).cpp
-	$(run)
-
 AbstractIHM.o:$(AbstractIHM).cpp
 	$(run)
 
@@ -134,8 +128,6 @@ model/objet/Sensor.cpp:
 model/objet/User.cpp:
 
 model/service/Service.cpp:
-
-model/data/Data.cpp:
 
 view/AbstractIHM.cpp:
 view/IHMAgency.cpp:
