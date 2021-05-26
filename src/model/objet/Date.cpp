@@ -58,6 +58,7 @@ Date & Date::operator =(const Date & unDate){
 		mois=unDate.mois;
 		annee=unDate.annee;
 	}
+	return(*this);
 }
 
 bool Date::operator == ( const Date & unDate )
