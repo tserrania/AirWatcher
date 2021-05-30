@@ -151,7 +151,7 @@ Date::Date ( int a,int m,int j,int h,int mi,int s )
     annee = a;
 } //----- Fin de Date (constructeur de copie)
 
-Date::Date (const string & stringDate);{
+Date::Date (const string & stringDate) {
 	
 		string buffer=stringDate.substr(0,2);jour=stoi(buffer);
 		
