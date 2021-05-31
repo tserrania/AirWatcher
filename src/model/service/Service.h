@@ -40,6 +40,7 @@ public:
     //
     // Contrat :
     //
+    void startProcedure () ;
 
 
 //------------------------------------------------- Surcharge d'opérateurs
@@ -65,6 +66,8 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
+    
+    void checkSensors () ;
 
     Date readDate(ifstream& ifs) ;
 

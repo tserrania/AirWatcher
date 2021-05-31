@@ -90,6 +90,8 @@ public:
     //
     // Contrat :
     //
+    
+    double getLastValue(const string attribut) const ;
 
     void incrementerPointsUtilisateur() ;
     // Mode d'emploi :

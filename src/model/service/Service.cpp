@@ -27,6 +27,9 @@ using namespace std;
 
 //----------------------------------------------------- Méthodes publiques
 
+void Service :: startProcedure () {
+    checkSensors() ;
+}
 
 //------------------------------------------------- Surcharge d'opérateurs
 
@@ -65,6 +68,122 @@ Service::~Service ( )
 //------------------------------------------------------------------ PRIVE
 
 //----------------------------------------------------- Méthodes protégées
+
+void Service :: checkSensors () {
+
+    list<Sensor>::iterator currentSensor;
+    list<Sensor>::iterator comparedSensor;
+    
+    
+    int const tailleTab (4) ;
+    double distanceSeuil = 20 ;
+    double moyenne [tailleTab] = { 0, 0, 0, 0 };
+    double seuilsProximite [tailleTab] = { 5, 5, 5, 2 };
+    double seuilsDerivees [tailleTab] = { 5, 5, 5, 2 };
+
+    for(currentSensor=sensors.begin(); currentSensor!=sensors.end(); currentSensor++)
+    {
+        
+        int nbSensorsProches = 0 ;
+        Point currentLocation = currentSensor->getLocation();
+        for(comparedSensor=sensors.begin(); comparedSensor!=sensors.end(); comparedSensor++)
+        {
+            double distance = comparedSensor->getLocation().getDistance(currentLocation);
+            if(distance > 0 && distance <= distanceSeuil){
+                if(comparedSensor->getLastValue("O3") == -1 || comparedSensor->getLastValue("NO2") == -1 || comparedSensor->getLastValue("SO2") == -1 || comparedSensor->getLastValue("PM10") == -1 ){
+                    cerr << "Problème dans la methode checkSensors dans la partie proximité : attribut inexistant" << endl ;
+                    break ;
+                }
+                moyenne[0] += comparedSensor->getLastValue("O3") ;
+                moyenne[1] += comparedSensor->getLastValue("NO2") ;
+                moyenne[2] += comparedSensor->getLastValue("SO2") ;
+                moyenne[3] += comparedSensor->getLastValue("PM10") ;
+                nbSensorsProches ++ ;
+            }
+        }
+        
+        bool validiteProximite = true ;
+        
+        string titres [tailleTab] = {"O3", "NO2", "SO2", "PM10"} ;
+        
+        for(int i = 0 ; i < tailleTab ; i++ ){
+            if(nbSensorsProches != 0){
+                moyenne[i] /= nbSensorsProches ;
+                if(abs(moyenne[i] - currentSensor -> getLastValue(titres[i])) > distanceSeuil){
+                    validiteProximite = false ;
+                    break ;
+                }
+            }
+        }
+        
+        
+        
+        double precedentValues [tailleTab] ;
+        double currentValues [tailleTab] ;
+        double maxDifferences [tailleTab] ;
+        
+        for(int i(0); i<tailleTab; i++)
+        {
+            precedentValues[i] = -1 ;
+            maxDifferences[i] = 0 ;
+        }
+        
+        list<Measurement>::const_iterator currentMeasurement ;
+        bool mesuresValides = true ;
+        
+        for(currentMeasurement=currentSensor->getMesures().begin() ; currentMeasurement!=currentSensor->getMesures().end() ; currentMeasurement++)
+        {
+            int typeMesure (-1) ; //0 pour O3, 1 pour NO2, 2 pour SO2 et 3 pour PM10
+            string type = currentMeasurement->getAttribute().getID() ;
+            
+            if(type == "O3"){
+                typeMesure = 0 ;
+            } else if(type == "NO2"){
+                typeMesure = 1 ;
+            } else if(type == "SO2"){
+                typeMesure = 2 ;
+            } else if(type == "PM10"){
+                typeMesure = 3 ;
+            }
+            
+            if(typeMesure == -1){
+                mesuresValides = false ;
+                break ;
+            }
+            
+            if(precedentValues[typeMesure] == -1){ //tableau pas encore initialisé pour cette valeur
+                precedentValues[typeMesure] = currentMeasurement->getValue() ;
+            } else { //tableau initialisé donc on peut comparer
+                currentValues[typeMesure] = currentMeasurement->getValue() ;
+                double difference = currentValues[typeMesure]-precedentValues[typeMesure] ;
+                maxDifferences[typeMesure] = max(maxDifferences[typeMesure], abs(difference)) ;
+            }
+        }
+        
+        bool validiteDerivee = true ;
+        
+        if(!mesuresValides){
+            validiteDerivee = false ;
+        } else {
+            for(int i(0); i<tailleTab; i++){
+                if(maxDifferences[i] > seuilsDerivees[i]){ //la derivee est toujours positive donc pas besoin de verifier la valeur absolue
+                    validiteDerivee = false ;
+                    break ;
+                }
+            }
+        }
+        
+        if(validiteProximite && validiteDerivee){
+            currentSensor->setValid("valide") ;
+        } else if(!validiteProximite && !validiteDerivee){
+            currentSensor->setValid("defectueux") ;
+        } else {
+            currentSensor->setValid("incertain") ;
+        }
+        
+    }
+}
+
 Date Service::readDate(ifstream& ifs) {
 	string buffer;
 	int a,m,j,h,mi,s;
