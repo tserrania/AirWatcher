@@ -43,6 +43,10 @@ string Sensor::isValid() const{
 	return valid ;
 }
 
+void Sensor::setValid(string valide) {
+    valid = valide ;
+}
+
 const list<Measurement> & Sensor::getMesures() const{
 	return mesures ;
 }
@@ -62,6 +66,20 @@ double Sensor::getValue(const Date & debut, const Date & fin, const Attribute & 
 		return -1 ;
 	}
 	return somme/cpt;
+}
+
+double Sensor::getLastValue(const string attribut) const{
+    double value = -1 ;
+    Date date = mesures.begin()->getDate() ;
+    list<Measurement> :: const_iterator it ;
+    for ( it = mesures.begin(); it != mesures.end(); it++ )
+    {
+        if(it->getDate() >= date && it->getAttribute().getID() == attribut){
+            date = it->getDate() ;
+            value = it->getValue() ;
+        }
+    }
+    return value ;
 }
 
 void Sensor::incrementerPointsUtilisateur(){

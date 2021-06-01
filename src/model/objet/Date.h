@@ -11,6 +11,8 @@
 
 //--------------------------------------------------- Interfaces utilisées
 
+using namespace std;
+
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
@@ -86,6 +88,8 @@ public:
     //~ //
     //~ // Contrat :
     //~ //
+    
+    Date (const string & stringDate);
 
     virtual ~Date ( );
     // Mode d'emploi :
