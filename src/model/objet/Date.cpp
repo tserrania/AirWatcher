@@ -61,7 +61,7 @@ Date & Date::operator =(const Date & unDate){
 	return(*this);
 }
 
-bool Date::operator == ( const Date & unDate )
+bool Date::operator == ( const Date & unDate ) const
 // Algorithme :
 //
 {
@@ -73,7 +73,7 @@ bool Date::operator == ( const Date & unDate )
 	return false;
 } //----- Fin de operator ==
 
-bool Date::operator <=(const Date & unDate){
+bool Date::operator <=(const Date & unDate) const{
 	if(this->annee < unDate.annee){
 		return(true);
 	}else if(this->annee > unDate.annee){
@@ -113,7 +113,7 @@ bool Date::operator <=(const Date & unDate){
 	}
 }
 
-bool Date::operator >=(const Date & unDate){
+bool Date::operator >=(const Date & unDate) const{
 	return(!(operator <=(unDate)) || operator ==(unDate));
 }
 

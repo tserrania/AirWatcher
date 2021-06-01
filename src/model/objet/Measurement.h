@@ -39,9 +39,9 @@ public:
     // Contrat :
     //
     
-    Date getDate() const{return timeStamp;}
+    const Date & getDate() const{return timeStamp;}
     
-    Attribute getAttribute() const{return attribut;}
+    const Attribute & getAttribute() const{return attribut;}
     
     double getValue() const{return value;}
 

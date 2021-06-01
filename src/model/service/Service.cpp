@@ -275,12 +275,37 @@ void Service::sortByDistance(const Point & location) {
 	
 }
 
-void Service::calculerPourcentageAttributs(map<Attribute, double> & ecart_courant, const Sensor & s, const Date & start, const Date & stop) {
+void Service::calculerPourcentageAttributs(map<Attribute, double> & pourcentages, const Sensor & s, const Date & debut, const Date & fin) {
+	map<Attribute, double> val_debut;
+	map<Attribute, double> val_fin;
 	
+	list<Measurement>::const_iterator it;
+	for(it=s.getMesures().begin();it!=s.getMesures().end();it++){
+		if (debut==it->getDate()) {
+			val_debut.insert(make_pair(it->getAttribute(), it->getValue()));
+		} else if (fin==it->getDate()) {
+			val_fin.insert(make_pair(it->getAttribute(), it->getValue()));
+		}
+	}
+	map<Attribute,double>::iterator it_deb;
+	for(it_deb=val_debut.begin();it_deb!=val_debut.end();it_deb++){
+		map<Attribute,double>::iterator it_fin = val_fin.find(it_deb->first);
+		if (it_fin!=val_fin.end()) {
+			pourcentages.insert(make_pair(it_deb->first, (it_deb->second-it_fin->second)/it_deb->second));
+		}
+	}
 }
 
 bool Service::estEfficace(const map<Attribute, double> & ecart_courant, double seuil) {
-	return false;
+	bool efficace = true;
+	map<Attribute,double>::const_iterator it;
+	for(it=ecart_courant.begin();it!=ecart_courant.end();it++){
+		if (it->second<seuil) {
+			efficace = false;
+			break;
+		}
+	}
+	return efficace;
 }
 
 // FONCTIONS DE LECTURE DE CSV
@@ -339,7 +364,6 @@ void Service::readSensors(string& csv_attributes, string& csv_measurements, stri
         cerr << "Erreur d'ouverture du fichier <" << csv_measurements << ">" << endl;
     } else {
         while (!in_meas.eof()) {
-        	//cout << "new --> " << endl;
         	Date date = readDate(in_meas);
         	string sensor_id;
         	string attrib_id;
@@ -444,7 +468,6 @@ void Service::readUsers(string& csv_users, string& csv_providers) {
         	list<Sensor*>::iterator it;
         	Individual* indiv = new Individual("", "", id);
         	users.push_back(indiv);
-        	cout << id << endl;
         	for(it=sensors.begin();it!=sensors.end();it++){
 			if ((*it)->getID()==sensor_id) {
 				(*it)->setIndividual(indiv); 
@@ -474,7 +497,6 @@ void Service::readUsers(string& csv_users, string& csv_providers) {
         	getline(in_provider, buffer, '\n');
         	Provider* prov = new Provider("", "", id);
         	users.push_back(prov);
-        	cout << id << endl;
         	list<Cleaner*>::iterator it;
         	for(it=cleaners.begin();it!=cleaners.end();it++){
 			if ((*it)->getID()==cleaner_id) {

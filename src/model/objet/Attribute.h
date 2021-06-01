@@ -38,11 +38,11 @@ public:
     // Contrat :
     //
     
-    string getID(){return ID;}
+    const string & getID() const{return ID;}
     
-    string getUnit(){return unit;}
+    const string & getUnit() const{return unit;}
     
-    string getDescription(){return description;}
+    const string & getDescription() const{return description;}
 
 
 //------------------------------------------------- Surcharge d'opérateurs

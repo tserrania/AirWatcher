@@ -60,15 +60,15 @@ public:
     // Contrat :
     //
 
-    bool operator == ( const Date & unDate );
+    bool operator == ( const Date & unDate ) const;
     // Mode d'emploi :
     //
     // Contrat :
     //
     
-    bool operator<=(const Date & unDate);
+    bool operator<=(const Date & unDate) const;
     
-    bool operator>=(const Date & unDate);
+    bool operator>=(const Date & unDate) const;
 
 //-------------------------------------------- Constructeurs - destructeur
     Date ( const Date & unDate );
