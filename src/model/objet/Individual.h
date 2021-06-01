@@ -39,8 +39,10 @@ public:
     //
     
 //-------------------------------------------- Getters - Setters
-    list<Sensor> GetSensors()const ;
+    const list<Sensor> GetSensors()const ;
 
+    void AddSensor(Sensor & s);
+    
     int GetPoints () const ;
     
     void SetReliable (bool reliable);
@@ -75,7 +77,7 @@ protected:
 
 //----------------------------------------------------- Attributs protégés
     string id;
-    list <Sensor> sensors;
+    list<Sensor> sensors;
     bool reliable;
     int points;
 };

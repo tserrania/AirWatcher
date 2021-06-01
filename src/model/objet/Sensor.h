@@ -43,7 +43,7 @@ public:
     // Contrat :
     //
 
-    void setIndividual(const Individual *indiv) ;
+    void setIndividual(Individual *indiv) ;
     // Mode d'emploi :
     //
     // Contrat :
@@ -117,7 +117,7 @@ public:
     //
     // Contrat :
     //
-    Sensor ( const string & ID, const Point & location, const string & Valid, const list<Measurement> & mesures, const Individual *unIndiv=nullptr);
+    Sensor ( const string & ID, const Point & location, const string & Valid, const list<Measurement> & mesures, Individual *unIndiv=nullptr);
     // Mode d'emploi (constructeur de copie) :
     //
     // Contrat :

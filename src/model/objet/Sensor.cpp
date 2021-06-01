@@ -23,11 +23,8 @@ using namespace std;
 
 //----------------------------------------------------- Méthodes publiques
 
-void Sensor::setIndividual(const Individual *indiv) {
-	if(individual!=indiv){
-		delete individual;
-		individual = new Individual(*indiv);
-	}
+void Sensor::setIndividual(Individual *indiv) {
+	individual = indiv;
 }
 
 string Sensor::getID() const{
@@ -109,10 +106,10 @@ mesures(unSensor.mesures)
 #ifdef MAP
     cout << "Appel au constructeur de copie de <Sensor>" << endl;
 #endif
-	this->individual = new Individual(*(unSensor.individual));
+	this->individual = unSensor.individual;
 } //----- Fin de Sensor (constructeur de copie)
 
-Sensor::Sensor ( const string & unID, const Point & Location, const string & Valid, const list<Measurement> & Mesures, const Individual *unIndiv )
+Sensor::Sensor ( const string & unID, const Point & Location, const string & Valid, const list<Measurement> & Mesures, Individual *unIndiv )
 :ID(unID),location(Location),valid(Valid), mesures(Mesures)
 // Algorithme :
 //
@@ -120,7 +117,7 @@ Sensor::Sensor ( const string & unID, const Point & Location, const string & Val
 #ifdef MAP
     cout << "Appel au constructeur de copie de <Sensor>" << endl;
 #endif
-	this->individual = new Individual(*unIndiv);
+	this->individual = unIndiv;
 } //----- Fin de Sensor (constructeur de copie)
 
 
@@ -131,9 +128,6 @@ Sensor::~Sensor ( )
 #ifdef MAP
     cout << "Appel au destructeur de <Sensor>" << endl;
 #endif
-	if(individual!=nullptr){
-		delete individual;
-	}
 } //----- Fin de ~Sensor
 
 

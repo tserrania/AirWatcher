@@ -35,6 +35,7 @@ public:
 
 //-------------------------------------------- Getters - Setters
     const list<Cleaner> & GetCleaners () const;
+    void AddCleaner (Cleaner & c);
 //------------------------------------------------- Surcharge d'opérateurs
 
 	Provider & operator =(const Provider & unProvider);

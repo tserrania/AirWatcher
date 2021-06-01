@@ -22,6 +22,11 @@
 //----------------------------------------------------- Méthodes publiques
 
 //-------------------------------------------- Getters - Setters
+void Provider::AddCleaner (Cleaner & c)
+{
+    cleaners.push_back(c);
+}
+
 const list<Cleaner> & Provider::GetCleaners () const
 {
     return cleaners;

@@ -36,9 +36,14 @@ bool Individual :: isReliable ( ) const
 }
 
 //-------------------------------------------- Getters - Setters
-list<Sensor> Individual :: GetSensors()const
+const list<Sensor> Individual :: GetSensors()const
 {
     return sensors; 
+}
+
+void Individual :: AddSensor(Sensor & s)
+{
+    sensors.push_back(s); 
 }
 
 int Individual :: GetPoints () const
@@ -77,6 +82,7 @@ Individual::Individual(const string & name, const string & password, const strin
     #endif
     reliable=true;
     points=0;
+    sensors;
 }
 
 

@@ -69,6 +69,8 @@ protected:
     Date readDate(ifstream& ifs) ;
 
     void readSensors(string& csv_attributes, string& csv_measurements, string& csv_sensors) ;
+    void readUsers(string& csv_users, string& csv_providers) ;
+    void readCleaners(string& csv_cleaners) ;
 
 //----------------------------------------------------- Attributs protégés
     list<User> users;

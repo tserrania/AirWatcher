@@ -6,10 +6,16 @@
 #include "model/objet/Individual.h"
 #include "model/objet/Provider.h"
 #include "model/objet/Agency.h"
+#include "model/service/Service.h"
 using namespace std;
 
 int main (void){
-	//Service service = new Service();
+	Service service("../../dataset/attributes.csv", 
+	"../../dataset/cleaners.csv",
+	"../../dataset/measurements.csv",
+	"../../dataset/providers.csv",
+	"../../dataset/sensors.csv",
+	"../../dataset/users.csv");
 	string id; string mdp;
 	AbstractIHM::menuConnexion();
 	Individual *utilisateur=new Individual("joris","1234","01");
