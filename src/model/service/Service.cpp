@@ -28,8 +28,54 @@ using namespace std;
 
 //----------------------------------------------------- Méthodes publiques
 
-void Service :: startProcedure () {
+void Service :: StartProcedure () {
     checkSensors() ;
+}
+
+void Service :: MesurerPerformancePurificateur (string & cleaner_id) {
+    Cleaner* cl = findCleaner(cleaner_id);
+    sortByDistance(cl->getLocation());
+    map<Attribute, pair<double, int>> total_ecarts;
+    double distance_max = 0.0f;
+    double seuil = 0.1f;
+    
+    list<Sensor*>::iterator currentSensor;
+    for(currentSensor=sensors.begin(); currentSensor!=sensors.end(); currentSensor++)
+    {
+    	map<Attribute, double> ecart_courant;
+    	calculerPourcentageAttributs(ecart_courant, **currentSensor, cl->getStart(), cl->getStop());
+    	if (estEfficace(ecart_courant, seuil)) {
+    		map<Attribute,double>::iterator it;
+    		for(it=ecart_courant.begin(); it!=ecart_courant.end(); it++)
+		{
+			Attribute a = it->first;
+			double total = 0.0f;
+			int nombre = 0;
+			map<Attribute,pair<double, int>>::iterator val = total_ecarts.find(a);
+			if (val!=total_ecarts.end()) {
+				total = val->second.first;
+				nombre = val->second.second;
+				total_ecarts.erase(val);
+			}
+			total += it->second;
+			++nombre;
+			total_ecarts.insert(make_pair(a, make_pair(total, nombre)));
+		}
+		distance_max = (*currentSensor) -> getLocation().getDistance(cl->getLocation());
+    	} else {
+    		break;
+    	}
+    }
+    map<Attribute, double> moyenne_ecarts;
+    map<Attribute,pair<double, int>>::iterator it;
+    for(it=total_ecarts.begin(); it!=total_ecarts.end(); it++)
+    {
+    	Attribute a = it->first;
+	double total = it->second.first;
+	int nombre = it->second.second;
+	moyenne_ecarts.insert(make_pair(a, total/nombre));
+    }
+    cout << distance_max;
 }
 
 //------------------------------------------------- Surcharge d'opérateurs
@@ -208,6 +254,37 @@ void Service :: checkSensors () {
     }
 }
 
+
+Cleaner* Service::findCleaner(const string & cleaner_id) {
+	list<Cleaner*>::iterator it;
+	for(it=cleaners.begin();it!=cleaners.end();it++){
+		if ((*it)->getID()==cleaner_id) {
+			return (*it);
+		}
+	}
+	return nullptr;
+}
+
+void Service::sortByDistance(const Point & location) {
+
+	sensors.sort([location](const Sensor* a, const Sensor* b) {
+		double dist_a = location.getDistance(a->getLocation());
+		double dist_b = location.getDistance(b->getLocation());
+		return dist_a - dist_b;
+	});
+	
+}
+
+void Service::calculerPourcentageAttributs(map<Attribute, double> & ecart_courant, const Sensor & s, const Date & start, const Date & stop) {
+	
+}
+
+bool Service::estEfficace(const map<Attribute, double> & ecart_courant, double seuil) {
+	return false;
+}
+
+// FONCTIONS DE LECTURE DE CSV
+
 Date Service::readDate(ifstream& ifs) {
 	string buffer;
 	int a,m,j,h,mi,s;
@@ -348,6 +425,7 @@ void Service::readCleaners(string& csv_cleaners) {
         in_clean.close();
     }
 }
+
 void Service::readUsers(string& csv_users, string& csv_providers) {
     ifstream in_user;
     string buffer;
@@ -371,6 +449,7 @@ void Service::readUsers(string& csv_users, string& csv_providers) {
 			if ((*it)->getID()==sensor_id) {
 				(*it)->setIndividual(indiv); 
 				indiv->AddSensor((**it));
+				break;
 			}
 		}
         	in_user.get(c);
@@ -393,14 +472,15 @@ void Service::readUsers(string& csv_users, string& csv_providers) {
         	getline(in_provider, cleaner_id, ';');
         	//Ignore everything until the end of the line
         	getline(in_provider, buffer, '\n');
-        	list<Cleaner*>::iterator it;
         	Provider* prov = new Provider("", "", id);
         	users.push_back(prov);
         	cout << id << endl;
+        	list<Cleaner*>::iterator it;
         	for(it=cleaners.begin();it!=cleaners.end();it++){
 			if ((*it)->getID()==cleaner_id) {
 				(*it)->setProvider(prov); 
 				prov->AddCleaner((**it));
+				break;
 			}
 		}
         	in_provider.get(c);

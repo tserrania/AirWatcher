@@ -52,7 +52,9 @@ public:
     // Contrat :
     //
     
-    bool operator ==(const Attribute & unAttribute){return ID==unAttribute.ID;}
+    bool operator ==(const Attribute & unAttribute) const {return ID==unAttribute.ID;}
+    
+    bool operator <(const Attribute & unAttribute) const {return ID<unAttribute.ID;}
     
     friend ostream & operator<<(ostream & os, const Attribute & unAttribute);
 

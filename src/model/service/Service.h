@@ -40,7 +40,15 @@ public:
     //
     // Contrat :
     //
-    void startProcedure () ;
+    void StartProcedure () ;
+    
+    
+    // type Méthode ( liste des paramètres );
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
+    void MesurerPerformancePurificateur (string & cleaner_id) ;
 
 
 //------------------------------------------------- Surcharge d'opérateurs
@@ -66,10 +74,14 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-    
-    void checkSensors () ;
 
+    void checkSensors () ;
     Date readDate(ifstream& ifs) ;
+    
+    Cleaner* findCleaner(const string & cleaner_id);
+    void sortByDistance(const Point & location);
+    void calculerPourcentageAttributs(map<Attribute, double> & ecart_courant, const Sensor & s, const Date & start, const Date & stop);
+    bool estEfficace(const map<Attribute, double> & ecart_courant, double seuil);
 
     void readSensors(string& csv_attributes, string& csv_measurements, string& csv_sensors) ;
     void readUsers(string& csv_users, string& csv_providers) ;

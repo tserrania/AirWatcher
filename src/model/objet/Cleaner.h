@@ -44,19 +44,19 @@ public:
     // Mode d'emploi :
     // Définit le Provider du Cleaner
     
-    string getID();
+    const string& getID();
     // Mode d'emploi :
     // Recupère l'ID du Cleaner
 
-    Point getLocation();
+    const Point& getLocation();
     // Mode d'emploi :
     // Recupère l'emplacement du Cleaner
 
-    Date getStart();
+    const Date& getStart();
     // Mode d'emploi :
     // Recupère la date de mise en service du Cleaner
 
-    Date getStop();
+    const Date& getStop();
     // Mode d'emploi :
     // Recupère la date d'arrêt du Cleaner
 

@@ -32,22 +32,22 @@ void Cleaner::setProvider(Provider* p)
     provider = p;
 }
 
-string Cleaner::getID()
+const string& Cleaner::getID()
 {
     return id;
 }
 
-Point Cleaner::getLocation()
+const Point& Cleaner::getLocation()
 {
     return location;
 }
 
-Date Cleaner::getStart()
+const Date& Cleaner::getStart()
 {
     return start;
 }
 
-Date Cleaner::getStop()
+const Date& Cleaner::getStop()
 {
     return stop;
 }
