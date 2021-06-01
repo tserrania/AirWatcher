@@ -37,7 +37,7 @@ void Service :: MesurerPerformancePurificateur (string & cleaner_id) {
     sortByDistance(cl->getLocation());
     map<Attribute, pair<double, int>> total_ecarts;
     double distance_max = 0.0f;
-    double seuil = 0.1f;
+    double seuil = -0.06f;
     
     list<Sensor*>::iterator currentSensor;
     for(currentSensor=sensors.begin(); currentSensor!=sensors.end(); currentSensor++)
@@ -62,6 +62,7 @@ void Service :: MesurerPerformancePurificateur (string & cleaner_id) {
 			total_ecarts.insert(make_pair(a, make_pair(total, nombre)));
 		}
 		distance_max = (*currentSensor) -> getLocation().getDistance(cl->getLocation());
+    		//cout << (*currentSensor)->getID() << " " << distance_max << endl;
     	} else {
     		break;
     	}
@@ -75,7 +76,9 @@ void Service :: MesurerPerformancePurificateur (string & cleaner_id) {
 	int nombre = it->second.second;
 	moyenne_ecarts.insert(make_pair(a, total/nombre));
     }
-    cout << distance_max;
+    //cout << distance_max << endl;
+    
+    // TODO: Renvoyer la distance_max à l'IHM
 }
 
 //------------------------------------------------- Surcharge d'opérateurs
@@ -270,28 +273,58 @@ void Service::sortByDistance(const Point & location) {
 	sensors.sort([location](const Sensor* a, const Sensor* b) {
 		double dist_a = location.getDistance(a->getLocation());
 		double dist_b = location.getDistance(b->getLocation());
-		return dist_a - dist_b;
+		return dist_a <= dist_b;
 	});
 	
 }
 
 void Service::calculerPourcentageAttributs(map<Attribute, double> & pourcentages, const Sensor & s, const Date & debut, const Date & fin) {
-	map<Attribute, double> val_debut;
-	map<Attribute, double> val_fin;
+	map<Attribute, pair<Date, double>> val_debut;
+	map<Attribute, pair<Date, double>> val_fin;
 	
 	list<Measurement>::const_iterator it;
+	map<Attribute,pair<Date, double>>::iterator it_deb;
+	map<Attribute,pair<Date, double>>::iterator it_fin;
 	for(it=s.getMesures().begin();it!=s.getMesures().end();it++){
-		if (debut==it->getDate()) {
-			val_debut.insert(make_pair(it->getAttribute(), it->getValue()));
-		} else if (fin==it->getDate()) {
-			val_fin.insert(make_pair(it->getAttribute(), it->getValue()));
+		if (debut<=it->getDate()) {
+			bool ok_insert = true;
+			it_deb = val_debut.find(it->getAttribute());
+			if (it_deb!=val_debut.end()) {
+				if (it_deb->second.first<=it->getDate()) {
+					ok_insert = false;
+				} else {
+					val_debut.erase(it_deb);
+				}
+			}
+			if (ok_insert) {
+				val_debut.insert(make_pair(it->getAttribute(), make_pair(it->getDate(), it->getValue())));
+			}
+		}
+		if (fin>=it->getDate()) {
+			bool ok_insert = true;
+			it_fin = val_fin.find(it->getAttribute());
+			if (it_fin!=val_fin.end()) {
+				if (it_fin->second.first>=it->getDate()) {
+					ok_insert = false;
+				} else {
+					val_fin.erase(it_fin);
+				}
+			}
+			if (ok_insert) {
+				val_fin.insert(make_pair(it->getAttribute(), make_pair(it->getDate(), it->getValue())));
+			}
 		}
 	}
-	map<Attribute,double>::iterator it_deb;
+	
+	
 	for(it_deb=val_debut.begin();it_deb!=val_debut.end();it_deb++){
-		map<Attribute,double>::iterator it_fin = val_fin.find(it_deb->first);
+		it_fin = val_fin.find(it_deb->first);
 		if (it_fin!=val_fin.end()) {
-			pourcentages.insert(make_pair(it_deb->first, (it_deb->second-it_fin->second)/it_deb->second));
+			pourcentages.insert(make_pair(it_deb->first, (it_deb->second.second-it_fin->second.second)/it_deb->second.second));
+		
+		/*cout << ">>> " << it_deb->second.second << " "<< it_fin->second.second << " "
+		 << it_deb->second.first.getJour() << "/" << it_deb->second.first.getMois() << "/" << it_deb->second.first.getAnnee() << " "
+		 << it_fin->second.first.getJour() << "/" << it_fin->second.first.getMois() << "/" << it_fin->second.first.getAnnee() << " "<< endl;*/
 		}
 	}
 }
