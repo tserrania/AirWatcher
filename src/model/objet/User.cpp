@@ -29,7 +29,7 @@ bool User :: isEqual ( string name, string passeword)
 }
 
 //-------------------------------------------- Getters - Setters
-string User :: GetName () const
+const string & User :: GetName () const
 {
     return name;
 }

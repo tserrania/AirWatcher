@@ -17,6 +17,8 @@
 #include "model/objet/Attribute.h"
 #include "model/objet/Sensor.h"
 #include "model/objet/Individual.h"
+#include "model/objet/Provider.h"
+#include "model/objet/Agency.h"
 using namespace std;
 
 //------------------------------------------------------ Include personnel
@@ -50,11 +52,12 @@ Sensor * Service::getSensorByID(const string & sensorID){
 User * Service::authentifier(const string & id, const string & mdp){
 	list<User*>::iterator currentUser;
 	for(currentUser=users.begin();currentUser!=users.end();currentUser++){
-		if((*currentUser)->GetID()==id){
-			return(new User(**(currentUser)));
+		if((*currentUser)->isEqual(id,  mdp)){
+			return *currentUser;
 		}
 	}
 	return(nullptr);
+}
 
 string Service :: checkSensor (string idAtester) {
 
@@ -183,53 +186,69 @@ string Service :: checkSensor (string idAtester) {
     return "sensor not found" ; //si on n'est pas sorti dans la boucle, ca veut dire que l'id du capteur n'a pas ete trouvé dans la liste
 }
 
-void Service :: MesurerPerformancePurificateur (string & cleaner_id) {
+pair<map<Attribute, double>, double> Service :: MesurerPerformancePurificateur (string & cleaner_id) {
     Cleaner* cl = findCleaner(cleaner_id);
-    sortByDistance(cl->getLocation());
-    map<Attribute, pair<double, int>> total_ecarts;
     double distance_max = 0.0f;
-    double seuil = 0.0f;
-    
-    list<Sensor*>::iterator currentSensor;
-    for(currentSensor=sensors.begin(); currentSensor!=sensors.end(); currentSensor++)
-    {
-    	map<Attribute, double> ecart_courant;
-    	calculerPourcentageAttributs(ecart_courant, **currentSensor, cl->getStart(), cl->getStop());
-    	if (estEfficace(ecart_courant, seuil)) {
-    		map<Attribute,double>::iterator it;
-    		for(it=ecart_courant.begin(); it!=ecart_courant.end(); it++)
-		{
-			Attribute a = it->first;
-			double total = 0.0f;
-			int nombre = 0;
-			map<Attribute,pair<double, int>>::iterator val = total_ecarts.find(a);
-			if (val!=total_ecarts.end()) {
-				total = val->second.first;
-				nombre = val->second.second;
-				total_ecarts.erase(val);
-			}
-			total += it->second;
-			++nombre;
-			total_ecarts.insert(make_pair(a, make_pair(total, nombre)));
-		}
-		distance_max = (*currentSensor) -> getLocation().getDistance(cl->getLocation());
-    		//cout << (*currentSensor)->getID() << " " << distance_max << endl;
-    	} else {
-    		break;
-    	}
-    }
     map<Attribute, double> moyenne_ecarts;
-    map<Attribute,pair<double, int>>::iterator it;
-    for(it=total_ecarts.begin(); it!=total_ecarts.end(); it++)
-    {
-    	Attribute a = it->first;
-	double total = it->second.first;
-	int nombre = it->second.second;
-	moyenne_ecarts.insert(make_pair(a, total/nombre));
-    }
-    //cout << distance_max << endl;
     
-    // TODO: Renvoyer la distance_max à l'IHM
+    if (cl!=nullptr){ // Un cleaner avec cet ID
+    
+	    double seuil = 0.0f;
+	    map<Attribute, pair<double, int>> total_ecarts;
+	    
+	    // On trie les Sensors en fonction de la distance du Cleaner
+	    sortByDistance(cl->getLocation());
+	    
+	    list<Sensor*>::iterator currentSensor;
+	    // Pour chaque sensor en fonction de la distance
+	    for(currentSensor=sensors.begin(); currentSensor!=sensors.end(); currentSensor++)
+	    {
+	    	map<Attribute, double> ecart_courant;
+	    	// On calcule le pourcentage d'amélioration de chaque attribut
+	    	calculerPourcentageAttributs(ecart_courant, **currentSensor, cl->getStart(), cl->getStop());
+	    	
+	    	if (estEfficace(ecart_courant, seuil)) {
+	    		// Si le capteur est efficace, on ajoute au total des écarts les écarts de chaque attribut (pour calcul de moyenne)
+	    		map<Attribute,double>::iterator it;
+	    		for(it=ecart_courant.begin(); it!=ecart_courant.end(); it++)
+			{
+				Attribute a = it->first;
+				double total = 0.0f;
+				int nombre = 0;
+				map<Attribute,pair<double, int>>::iterator val = total_ecarts.find(a);
+				if (val!=total_ecarts.end()) {
+					total = val->second.first;
+					nombre = val->second.second;
+					total_ecarts.erase(val);
+				}
+				total += it->second;
+				++nombre;
+				total_ecarts.insert(make_pair(a, make_pair(total, nombre)));
+			}
+	    		// Puis on met à jour le rayon d'action
+			distance_max = (*currentSensor) -> getLocation().getDistance(cl->getLocation());
+	    		//cout << (*currentSensor)->getID() << " " << distance_max << endl;
+	    	} else {
+	    		// Sinon on arrête
+	    		break;
+	    	}
+	    }
+	    map<Attribute,pair<double, int>>::iterator it;
+	    // On calcule la moyenne des écarts pour chaque attribut
+	    for(it=total_ecarts.begin(); it!=total_ecarts.end(); it++)
+	    {
+	    	Attribute a = it->first;
+		double total = it->second.first;
+		int nombre = it->second.second;
+		moyenne_ecarts.insert(make_pair(a, total/nombre));
+	    }
+	    //cout << distance_max << endl;
+    } else {
+    	    // Pas de Cleaner = distance négative
+	    distance_max = -1.0f;
+    }
+    // On renvoie les moyennes et le rayon d'action
+    return make_pair(moyenne_ecarts, distance_max);
 }
 
 //------------------------------------------------- Surcharge d'opérateurs
@@ -343,21 +362,25 @@ void Service::calculerPourcentageAttributs(map<Attribute, double> & pourcentages
 	list<Measurement>::const_iterator it;
 	map<Attribute,pair<Date, double>>::iterator it_deb;
 	map<Attribute,pair<Date, double>>::iterator it_fin;
+	// On cherche les mesures des capteurs les plus proches du début et de la fin de mise en service du capteur
 	for(it=s.getMesures().begin();it!=s.getMesures().end();it++){
-		if (debut<=it->getDate()) {
+		// On regarde les mesures les plus proches avant le début de mise en service du capteur
+		if (debut>=it->getDate()) {
 			bool ok_insert = true;
 			it_deb = val_debut.find(it->getAttribute());
 			if (it_deb!=val_debut.end()) {
-				if (it_deb->second.first<=it->getDate()) {
+				if (it_deb->second.first>=it->getDate()) {
 					ok_insert = false;
 				} else {
 					val_debut.erase(it_deb);
 				}
 			}
+			// On remplace si on trouve plus proche
 			if (ok_insert) {
 				val_debut.insert(make_pair(it->getAttribute(), make_pair(it->getDate(), it->getValue())));
 			}
 		}
+		// On regarde les mesures les plus proches avant la fin de mise en service du capteur
 		if (fin>=it->getDate()) {
 			bool ok_insert = true;
 			it_fin = val_fin.find(it->getAttribute());
@@ -368,13 +391,14 @@ void Service::calculerPourcentageAttributs(map<Attribute, double> & pourcentages
 					val_fin.erase(it_fin);
 				}
 			}
+			// On remplace si on trouve plus proche
 			if (ok_insert) {
 				val_fin.insert(make_pair(it->getAttribute(), make_pair(it->getDate(), it->getValue())));
 			}
 		}
 	}
 	
-	
+	// On calcule les améliorations pour chaque attribut
 	for(it_deb=val_debut.begin();it_deb!=val_debut.end();it_deb++){
 		it_fin = val_fin.find(it_deb->first);
 		if (it_fin!=val_fin.end()) {
@@ -391,7 +415,7 @@ bool Service::estEfficace(const map<Attribute, double> & ecart_courant, double s
 		total += it->second;
 		++nombre;
 	}
-	//cout << ">>> " << total << " " << nombre << endl;
+	// On fait la moyenne des écarts de tous les attributs puis on vérifie la plus proche
 	return total/nombre>=seuil;
 }
 
@@ -553,7 +577,7 @@ void Service::readUsers(string& csv_users, string& csv_providers) {
         	//Ignore everything until the end of the line
         	getline(in_user, buffer, '\n');
         	list<Sensor*>::iterator it;
-        	Individual* indiv = new Individual("", "", id);
+        	Individual* indiv = new Individual(id, id, id);
         	users.push_back(indiv);
         	for(it=sensors.begin();it!=sensors.end();it++){
 			if ((*it)->getID()==sensor_id) {
@@ -582,7 +606,7 @@ void Service::readUsers(string& csv_users, string& csv_providers) {
         	getline(in_provider, cleaner_id, ';');
         	//Ignore everything until the end of the line
         	getline(in_provider, buffer, '\n');
-        	Provider* prov = new Provider("", "", id);
+        	Provider* prov = new Provider(id, id, id);
         	users.push_back(prov);
         	list<Cleaner*>::iterator it;
         	for(it=cleaners.begin();it!=cleaners.end();it++){
@@ -600,4 +624,9 @@ void Service::readUsers(string& csv_users, string& csv_providers) {
         }
         in_provider.close();
     }
+    
+    // Pour l'agence
+    string id_agency = "Agency";
+    Agency* agent = new Agency(id_agency, id_agency);
+    users.push_back(agent);
 }

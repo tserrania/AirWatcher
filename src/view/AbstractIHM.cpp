@@ -28,9 +28,18 @@ using namespace std;
 //{
 //} //----- Fin de Méthode
 
-void AbstractIHM::menuConnexion(){
+void AbstractIHM::accueil() const{
+	cout<<"Bienvenue dans AirWatcher"<<endl;
+	cout<<"Veuillez taper: "<<endl;
+	cout<<"		1 pour vous connecter."<<endl;
+	cout<<"		2 pour quitter."<<endl;
+}
+
+void AbstractIHM::menuConnexion(string & id, string & mdp) const{
 	cout<<"identifiant: "<<endl;
+	cin>>id;
 	cout<<"mot de passe: "<<endl;
+	cin>>mdp;
 }
 
 int AbstractIHM::recupererChoix() const{

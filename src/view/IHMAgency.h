@@ -11,7 +11,7 @@
 #define IHMAgency_H
 
 //--------------------------------------------------- Interfaces utilisées
-#include "model/objet/AbstractIHM.h"
+#include "view/AbstractIHM.h"
 #include "model/objet/User.h"
 
 //------------------------------------------------------------- Constantes

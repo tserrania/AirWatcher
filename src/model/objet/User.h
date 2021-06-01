@@ -36,7 +36,9 @@ public:
     //
     
 //-------------------------------------------- Getters - Setters
-    virtual string GetID()const{return name;}
+    const string & GetName () const;
+    
+    virtual const string & GetID()const{return name;}
     
     virtual int getPoints(){return 0;}
 //------------------------------------------------- Surcharge d'opérateurs

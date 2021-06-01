@@ -51,7 +51,7 @@ public:
     //
     // Contrat :
     //
-    void MesurerPerformancePurificateur (string & cleaner_id) ;
+    pair<map<Attribute, double>, double> MesurerPerformancePurificateur (string & cleaner_id) ;
     
     Sensor * getSensorByID(const string & sensorID);
     

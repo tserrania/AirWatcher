@@ -59,8 +59,8 @@ void choixAction(int choix, AbstractIHM *ihm, Service * service, User * utilisat
 		case 3:{
 			string idCleaner=ihm->recupererChaine();
 			cout<<"Efficacité du purificateur "<<idCleaner<<endl;
-			service->MesurerPerformancePurificateur(idCleaner);
-			//ihm->afficherEfficacite()
+			pair<map<Attribute, double>, double> res = service->MesurerPerformancePurificateur(idCleaner);
+			ihm->afficherEfficacite(res.first, res.second);
 		}
 			break;
 		
@@ -74,17 +74,17 @@ void choixAction(int choix, AbstractIHM *ihm, Service * service, User * utilisat
 
 int main (void){
 	Service *service = new Service(attributesPath,cleanersPath,measurementsPath,providersPath,sensorsPath,usersPath);
-	cout<<"service ok"<<endl;
-	AbstractIHM *ihm(0);
-	User *utilisateur(0);
+	cout<<"Service Démarré"<<endl;
 	int choix;
-	
+	User u("", "");
+	AbstractIHM *ihm = new IHMIndividual(u); // Par défaut
+	User* utilisateur = nullptr;
 	while(true){
+		User *utilisateur = nullptr;
 		
 		ihm->accueil();
 		int choix=ihm->recupererChoix();
 		if(choix!=1){break;}
-		
 		string id; string mdp;
 		while(utilisateur==nullptr){
 			ihm->menuConnexion(id,mdp);
@@ -97,7 +97,7 @@ int main (void){
 		cout<<"Bonjour "<<utilisateur->GetID()<<endl;
 		
 		//choixIHM(ihm,utilisateur);
-		
+		delete ihm; 
 		if(dynamic_cast<Agency*>(utilisateur)==nullptr && dynamic_cast<Provider*>(utilisateur)==nullptr){
 			ihm = new IHMIndividual(*utilisateur);
 			cout<<"Individual"<<endl;
@@ -122,7 +122,7 @@ int main (void){
 			}
 		}
 	}
-
-	delete ihm; delete utilisateur; delete service;
+	delete ihm; 
+	delete service;
 	return(0);
 }

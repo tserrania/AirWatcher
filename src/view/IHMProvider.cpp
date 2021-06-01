@@ -30,7 +30,7 @@ using namespace std;
 
 void IHMProvider::afficherMenu() const{
 	cout<<"Veuillez taper: "<<endl;
-	cout<<"		1 pour mesurer l'efficacité d'un capteur."<<endl;
+	cout<<"		1 pour mesurer l'efficacité d'un purificateur."<<endl;
 	cout<<"		2 pour quitter."<<endl;
 }
 
@@ -40,15 +40,24 @@ void IHMProvider::selectionCleaner() const{
 
 
 void IHMProvider::afficherEfficacite(const map<Attribute,double> & pourcentages, double rayonAction) const{
-	cout<<"Le pourcentage d'amélioration moyen par polluant est: "<<endl;
-	
-	map<Attribute, double>::const_iterator it;
-	for(it=pourcentages.begin();it!=pourcentages.end();it++){
-		cout<<it->first<<": "<<it->second<<"%"<<endl;
+	if (rayonAction<-0.1) {
+		cout<<"Le purificateur sélectionné est invalide."<<endl;
+		cout<<endl;
 	}
-	cout<<endl;
-	cout<<"Le purificateur a un rayon d'action de "<<rayonAction<<" mètres."<<endl;
-	cout<<endl;
+	else {
+		cout<<"Le purificateur a un rayon d'action de "<<rayonAction<<" km."<<endl;
+		cout<<endl;
+	}
+	
+	if (pourcentages.begin()!=pourcentages.end()) {
+		cout<<"Le pourcentage d'amélioration moyen par polluant est: "<<endl;
+		
+		map<Attribute, double>::const_iterator it;
+		for(it=pourcentages.begin();it!=pourcentages.end();it++){
+			cout<<it->first<<": "<<it->second<<"%"<<endl;
+		}
+		cout<<endl;
+	}
 }
 
 int IHMProvider::traduireChoix(int choix) const{
