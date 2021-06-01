@@ -11,7 +11,7 @@
 #define IHMAgency_H
 
 //--------------------------------------------------- Interfaces utilisées
-#include "view/AbstractIHM.h"
+#include "model/objet/AbstractIHM.h"
 #include "model/objet/User.h"
 
 //------------------------------------------------------------- Constantes
@@ -19,8 +19,8 @@
 //------------------------------------------------------------------ Types
 
 //------------------------------------------------------------------------
-// Rôle de la classe <IHMAgency>
-//
+// Rôle de la classe <IHMAgency>, hérite de AbstractIHM
+//IHM propre aux membres de l'agence gouvernementale. Ils n'ont accès qu'aux fonctionnalités pour détecter un capteur défectueux
 //
 //------------------------------------------------------------------------
 
@@ -39,8 +39,12 @@ public:
     void afficherMenu() const;
     
     void selectionCapteurDefectueux() const;
+    //Permet à l'utilisateur de taper au clavier l'identifiant du capteur qu'il souhaite analyser
     
     void afficherCapteurDefectueux(const string & etatCapteur) const;
+    //Une fois les traitements réalisés, on affiche l'état du capteur, soit fonctionnel, soit défectueux, soit incertain, soit non trouvé
+    
+    int traduireChoix(int choix) const;
 
 
 //------------------------------------------------- Surcharge d'opérateurs
@@ -82,4 +86,3 @@ protected:
 //-------------------------------- Autres définitions dépendantes de <IHMAgency>
 
 #endif // IHMAgency_H
-

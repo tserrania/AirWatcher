@@ -24,7 +24,7 @@ using namespace std;
 
 //------------------------------------------------------------------------
 // Rôle de la classe <IHMProvider>
-//
+//IHM propre aux fournisseus de purificateurs d'air. Ceux-ci n'ont accès qu'à la mesure de l'efficacité des purificateurs
 //
 //------------------------------------------------------------------------
 
@@ -43,8 +43,14 @@ public:
     void afficherMenu() const;
     
     void selectionCleaner() const;
+    //Permet à l'utilisateur de rentrer au clavier l'identifiant du purificateur à analyser
+    
     
     void afficherEfficacite(const map<Attribute,double> & pourcentages, double rayonAction) const;
+    //Une fois les calculs effectués, on affiche les résultats en indiquant pour chaque Attribut, c'est à dire chaque type de polluant,
+    //quel est le pourcentage d'efficacité du purificateur avant et après son fonctionnement, ainsi que son rayon d'action
+    
+    int traduireChoix(int choix) const;
 
 
 //------------------------------------------------- Surcharge d'opérateurs

@@ -23,7 +23,7 @@ using namespace std;
 
 //------------------------------------------------------------------------
 // Rôle de la classe <IHMIndividual>
-//
+//IHM propre aux utilisateurs privés de l'application. Pour l'instant, ceux-ci ne peuvent que consulter leur nombre de points
 //
 //------------------------------------------------------------------------
 
@@ -42,6 +42,8 @@ public:
     void afficherMenu() const;
     
     void afficherPoints(int points) const;
+    
+    int traduireChoix(int choix) const;
 
 
 //------------------------------------------------- Surcharge d'opérateurs

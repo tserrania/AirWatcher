@@ -31,7 +31,7 @@ using namespace std;
 void IHMAgency::afficherMenu() const{
 	cout<<"Veuillez taper: "<<endl;
 	cout<<"		1 pour vérifier si un capteur est défectueux."<<endl;
-	cout<<"		0 pour quitter."<<endl;
+	cout<<"		2 pour quitter."<<endl;
 }
 
 void IHMAgency::selectionCapteurDefectueux() const{
@@ -39,16 +39,28 @@ void IHMAgency::selectionCapteurDefectueux() const{
 }
 
 void IHMAgency::afficherCapteurDefectueux(const string & etatCapteur) const{
-	if(etatCapteur=="inexistant"){
-		cout<<"L'identifiant tapé n'est pas présent dans la base de données"<<endl;
-	}else if(etatCapteur=="valide"){
+	if(etatCapteur=="valide"){
 		cout<<"Le capteur fonctionne correctement."<<endl;
 	}else if(etatCapteur=="defectueux"){
 		cout<<"Le capteur est defectueux."<<endl;
 	}else if(etatCapteur=="incertain"){
 		cout<<"Le capteur a un comportement anormal. Des vérifications supplémentaires sont nécessaires."<<endl;
+	}else{
+		cout<<"Le capteur n'a pas été trouvé, veuillez vérifier l'identifiant"<<endl;
 	}
 	cout<<endl;
+}
+
+int IHMAgency::traduireChoix(int choix) const{
+	if(choix==1){                              
+		selectionCapteurDefectueux();
+		string idCapteur=recupererChaine();
+		return(1);  //Code correspondant à l'appel du service repérer un capteur défectueux
+	}else if(choix==2){
+		return(0); //Code correspondant pour quitter l'application
+	}else{
+		return(-1); //Code correspondant à un choix invalide
+	}
 }
 
 

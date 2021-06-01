@@ -52,6 +52,10 @@ public:
     // Contrat :
     //
     void MesurerPerformancePurificateur (string & cleaner_id) ;
+    
+    Sensor * getSensorByID(const string & sensorID);
+    
+    User * authentifier(const string & id, const string & mdp);
 
 
 //------------------------------------------------- Surcharge d'opérateurs

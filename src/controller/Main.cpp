@@ -9,60 +9,120 @@
 #include "model/service/Service.h"
 using namespace std;
 
-int main (void){
-	Service service("../../dataset/attributes.csv",
-	"../../dataset/cleaners.csv",
-	"../../dataset/measurements.csv",
-	"../../dataset/providers.csv",
-	"../../dataset/sensors.csv",
-	"../../dataset/users.csv");
-	string id; string mdp;
-	AbstractIHM::menuConnexion();
-	Individual *utilisateur=new Individual("joris","1234","01");
-	AbstractIHM *ihm(0);
-	
-	cout<<"Bonjour"<<endl;
-	
-	if(dynamic_cast<Agency*>(utilisateur)==nullptr && dynamic_cast<Provider*>(utilisateur)==nullptr){
-		ihm = new IHMIndividual(*utilisateur);
-		cout<<"Individual"<<endl;
-	}else if(dynamic_cast<Agency*>(utilisateur)==nullptr && dynamic_cast<Individual*>(utilisateur)==nullptr){
-		ihm = new IHMProvider(*utilisateur);
-		cout<<"Provider"<<endl;
-	}else if(dynamic_cast<Provider*>(utilisateur)==nullptr && dynamic_cast<Individual*>(utilisateur)==nullptr){
-		ihm = new IHMAgency(*utilisateur);
-		cout<<"Agency"<<endl;
-	}else{
-		cout<<"L'utilisateur n'existe pas"<<endl;
-	}
-	
-	
-	// Pour des tests
-	string s = "Cleaner0";
-	service.MesurerPerformancePurificateur(s);
-	string s2 = "Cleaner1";
-	service.MesurerPerformancePurificateur(s2);
-	
-	
-	cout<<"termine"<<endl;
-	
-	//~ int choix=-1;
-	//~ while(choix!=0){
-		//~ ihm->afficherMenu();
-		//~ int choix=ihm->recupererChoix();
-		
-		//~ service.executerAlgorithme(choix);
+const string attributesPath="../../dataset/attributes.csv";
+const string cleanersPath="../../dataset/cleaners.csv";
+const string measurementsPath="../../dataset/measurements.csv";
+const string providersPath="../../dataset/providers.csv";
+const string sensorsPath="../../dataset/sensors.csv";
+const string usersPath="../../dataset/users.csv";
+
+//~ void connexion(AbstractIHM *ihm, User *utilisateur){
+	//~ string id; string mdp;
+	//~ while(utilisateur==nullptr){
+		//~ ihm->menuConnexion(id,mdp);
+		//~ utilisateur=service.authentifier(id,mdp);
+		//~ if(utilisateur==nullptr){
+			//~ cout<<"Identifiants incorrects, veuillez réessayer"<<endl;
+		//~ }
 	//~ }
+//~ }
+
+//~ void choixIHM(AbstractIHM *ihm, User *utilisateur){
+	//~ if(dynamic_cast<Agency*>(utilisateur)==nullptr && dynamic_cast<Provider*>(utilisateur)==nullptr){
+		//~ ihm = new IHMIndividual(*utilisateur);
+		//~ cout<<"Individual"<<endl;
+	//~ }else if(dynamic_cast<Agency*>(utilisateur)==nullptr && dynamic_cast<Individual*>(utilisateur)==nullptr){
+		//~ ihm = new IHMProvider(*utilisateur);
+		//~ cout<<"Provider"<<endl;
+	//~ }else if(dynamic_cast<Provider*>(utilisateur)==nullptr && dynamic_cast<Individual*>(utilisateur)==nullptr){
+		//~ ihm = new IHMAgency(*utilisateur);
+		//~ cout<<"Agency"<<endl;
+	//~ }
+//~ }
+
+//Selon choix, qui est un numéro qui dépend à la fois de l'entrée utilisateur et du type d'IHM, on exécute la méthode correspondante
+void choixAction(int choix, AbstractIHM *ihm, Service * service, User * utilisateur){
+	switch(choix){
+		case 1:{
+			string idCapteur=ihm->recupererChaine();
+			cout<<"Analyse du capteur "<<idCapteur<<endl;
+			string etatCapteur=service->checkSensor(idCapteur);
+			ihm->afficherCapteurDefectueux(etatCapteur);
+		}
+			break;
+		
+		case 2:
+			cout<<"Affichage du nombre de points"<<endl;
+			ihm->afficherPoints(utilisateur->getPoints());
+			break;
+		
+		case 3:{
+			string idCleaner=ihm->recupererChaine();
+			cout<<"Efficacité du purificateur "<<idCleaner<<endl;
+			service->MesurerPerformancePurificateur(idCleaner);
+			//ihm->afficherEfficacite()
+		}
+			break;
+		
+		case 0:
+			cout<<"Au revoir"<<endl; break;
+		
+		default:
+			cout<<"Choix invalide"<<endl;
+	}
+}
+
+int main (void){
+	Service *service = new Service(attributesPath,cleanersPath,measurementsPath,providersPath,sensorsPath,usersPath);
+	cout<<"service ok"<<endl;
+	AbstractIHM *ihm(0);
+	User *utilisateur(0);
+	int choix;
 	
-	//~ cout<<"Au revoir"<<endl;
-	delete ihm;
-    /*Service service ("../src/data/attributes.csv", "../src/data/cleaners.csv", "../src/data/measurements.csv", "../src/data/providers.csv", "../src/data/sensors.csv", "../src/data/users.csv");
-    //service.afficheVerification() ;
-    string str = service.checkSensor("Sensor0") ;
-    cout << "check sensor 0 -> " << str << endl ;
-    str = service.checkSensor("Sensor4") ;
-    cout << "check sensor 4 -> " << str << endl ;
-    str = service.checkSensor("Sensor5") ;
-    cout << "check sensor 5 -> " << str << endl ;
-    //service.afficheVerification() ;*/
+	while(true){
+		
+		ihm->accueil();
+		int choix=ihm->recupererChoix();
+		if(choix!=1){break;}
+		
+		string id; string mdp;
+		while(utilisateur==nullptr){
+			ihm->menuConnexion(id,mdp);
+			utilisateur=service->authentifier(id,mdp);
+			if(utilisateur==nullptr){
+				cout<<"Identifiants incorrects, veuillez réessayer"<<endl;
+			}
+		}
+		
+		cout<<"Bonjour "<<utilisateur->GetID()<<endl;
+		
+		//choixIHM(ihm,utilisateur);
+		
+		if(dynamic_cast<Agency*>(utilisateur)==nullptr && dynamic_cast<Provider*>(utilisateur)==nullptr){
+			ihm = new IHMIndividual(*utilisateur);
+			cout<<"Individual"<<endl;
+		}else if(dynamic_cast<Agency*>(utilisateur)==nullptr && dynamic_cast<Individual*>(utilisateur)==nullptr){
+			ihm = new IHMProvider(*utilisateur);
+			cout<<"Provider"<<endl;
+		}else if(dynamic_cast<Provider*>(utilisateur)==nullptr && dynamic_cast<Individual*>(utilisateur)==nullptr){
+			ihm = new IHMAgency(*utilisateur);
+			cout<<"Agency"<<endl;
+		}
+		
+		
+		choix=-1;
+		while(choix!=0){  //Choix vaut 0 lorsque l'utilisateur demande de quitter
+			ihm->afficherMenu();  //Affichage de l'ensemble des fonctionnalités disponibles
+			choix=ihm->recupererChoix();  //On récupère l'entrée clavier
+			if(choix!=-1){
+				choix=ihm->traduireChoix(choix); //On interprète l'entrée utlisateur pour appeler le bon service
+				choixAction(choix,ihm,service,utilisateur);
+			}else{
+				cout<<"Choix invalide"<<endl;
+			}
+		}
+	}
+
+	delete ihm; delete utilisateur; delete service;
+	return(0);
 }

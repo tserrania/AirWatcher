@@ -31,12 +31,13 @@ using namespace std;
 void IHMProvider::afficherMenu() const{
 	cout<<"Veuillez taper: "<<endl;
 	cout<<"		1 pour mesurer l'efficacité d'un capteur."<<endl;
-	cout<<"		0 pour quitter."<<endl;
+	cout<<"		2 pour quitter."<<endl;
 }
 
 void IHMProvider::selectionCleaner() const{
 	cout<<"Veuillez rentrer l'identifiant du purificateur à tester: ";
 }
+
 
 void IHMProvider::afficherEfficacite(const map<Attribute,double> & pourcentages, double rayonAction) const{
 	cout<<"Le pourcentage d'amélioration moyen par polluant est: "<<endl;
@@ -48,6 +49,17 @@ void IHMProvider::afficherEfficacite(const map<Attribute,double> & pourcentages,
 	cout<<endl;
 	cout<<"Le purificateur a un rayon d'action de "<<rayonAction<<" mètres."<<endl;
 	cout<<endl;
+}
+
+int IHMProvider::traduireChoix(int choix) const{
+	if(choix==1){
+		selectionCleaner();
+		return(3);  //Code correspondant au service pour mesurer l'efficacité d'un cleaner
+	}else if(choix==2){
+		return(0); //Code correspondant pour quitter l'application
+	}else{
+		return(-1);//Code correspondant à un choix invalide
+	}
 }
 
 

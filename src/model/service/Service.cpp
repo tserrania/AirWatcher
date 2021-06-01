@@ -36,6 +36,26 @@ void Service::afficheVerification(){
     cout << endl << endl << "<<------------------------------------------->>" << endl << endl ;
 }
 
+Sensor * Service::getSensorByID(const string & sensorID){
+	list<Sensor*>::iterator currentSensor;
+	
+	for(currentSensor=sensors.begin();currentSensor!=sensors.end();currentSensor++){
+		if((*currentSensor)->getID()==sensorID){
+			return(*currentSensor);
+		}
+	}
+	return(nullptr);
+}
+
+User * Service::authentifier(const string & id, const string & mdp){
+	list<User*>::iterator currentUser;
+	for(currentUser=users.begin();currentUser!=users.end();currentUser++){
+		if((*currentUser)->GetID()==id){
+			return(new User(**(currentUser)));
+		}
+	}
+	return(nullptr);
+
 string Service :: checkSensor (string idAtester) {
 
     //currentSensor est le Sensor qu'on va verifier et compared va être ceux qu'on va utiliser comme référence
