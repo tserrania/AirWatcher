@@ -10,7 +10,7 @@
 using namespace std;
 
 int main (void){
-	Service service("../../dataset/attributes.csv", 
+	Service service("../../dataset/attributes.csv",
 	"../../dataset/cleaners.csv",
 	"../../dataset/measurements.csv",
 	"../../dataset/providers.csv",
@@ -56,4 +56,13 @@ int main (void){
 	
 	//~ cout<<"Au revoir"<<endl;
 	delete ihm;
+    /*Service service ("../src/data/attributes.csv", "../src/data/cleaners.csv", "../src/data/measurements.csv", "../src/data/providers.csv", "../src/data/sensors.csv", "../src/data/users.csv");
+    //service.afficheVerification() ;
+    string str = service.checkSensor("Sensor0") ;
+    cout << "check sensor 0 -> " << str << endl ;
+    str = service.checkSensor("Sensor4") ;
+    cout << "check sensor 4 -> " << str << endl ;
+    str = service.checkSensor("Sensor5") ;
+    cout << "check sensor 5 -> " << str << endl ;
+    //service.afficheVerification() ;*/
 }

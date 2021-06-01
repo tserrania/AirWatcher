@@ -40,7 +40,10 @@ public:
     //
     // Contrat :
     //
-    void StartProcedure () ;
+    
+    string checkSensor (string idSensor) ;
+    
+    void afficheVerification() ;
     
     
     // type Méthode ( liste des paramètres );
@@ -74,8 +77,11 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
+    
+    void afficheSensors() ;
 
-    void checkSensors () ;
+    void afficheMeasurements() ;
+
     Date readDate(ifstream& ifs) ;
     
     Cleaner* findCleaner(const string & cleaner_id);

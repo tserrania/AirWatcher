@@ -19,6 +19,7 @@ using namespace std;
 
 //------------------------------------------------------------- Constantes
 const double earth_radius = 6371.0;
+const double PI = 3.14159265358979323846 ;
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
@@ -30,7 +31,9 @@ double Point::getDistance(const Point& unPoint) const
 // Algorithme : 
 // Calcul de la distance avec la formule de Haversine
 {
-    double a = pow(sin((latitude-unPoint.latitude)/2),2)+cos(latitude)*cos(unPoint.latitude)*pow(sin((longitude-unPoint.longitude)/2),2);
+    double a = pow(sin((latitude-unPoint.latitude)*(PI/180)/2),2)+
+    cos(latitude*PI/180)*cos(unPoint.latitude*PI/180)*
+    pow(sin((longitude-unPoint.longitude)*(PI/180)/2),2);
     double c = 2*atan2(sqrt(a), sqrt(1-a));
     return earth_radius*c;
 }

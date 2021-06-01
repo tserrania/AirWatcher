@@ -28,8 +28,139 @@ using namespace std;
 
 //----------------------------------------------------- Méthodes publiques
 
-void Service :: StartProcedure () {
-    checkSensors() ;
+void Service::afficheVerification(){
+    cout << endl << endl << "<<------------------------------------------->>" << endl << endl ;
+    afficheSensors() ;
+    cout << endl << endl << "<<------------------------------------------->>" << endl << endl ;
+    afficheMeasurements() ;
+    cout << endl << endl << "<<------------------------------------------->>" << endl << endl ;
+}
+
+string Service :: checkSensor (string idAtester) {
+
+    //currentSensor est le Sensor qu'on va verifier et compared va être ceux qu'on va utiliser comme référence
+    list<Sensor*>::iterator currentSensor;
+    list<Sensor*>::iterator comparedSensor;
+    
+    //pour chacun des 4 types de mesures, on initialise des seuils au dessus desquels les mesures ne sont plus valides
+    //chaque colonne correspond à un type de mesure (O3, NO2, SO2 puis PM10)
+    int const tailleTab (4) ;
+    double distanceSeuil = 1000 ; //distance maximale pour qu'un capteur soit pris en compte pour la validite de proximité
+    double seuilsProximite [tailleTab] = { 5, 5, 5, 2 }; //il ne faut pas que le capteur soit plus eloigné de ces valeurs des moyennes dans son rayon geographique
+    double seuilsDerivees [tailleTab] = { 5, 5, 5, 2 }; //il ne faut pas que les valeurs du capteur different entre elles de plus que ces seuils
+    
+    double moyenne [tailleTab] = { 0, 0, 0, 0 }; //moyenne des mesures des capteurs dans le rayon seuil
+
+    for(currentSensor=sensors.begin(); currentSensor!=sensors.end(); currentSensor++)
+    { //on parcourt la liste des capteurs jusqu'à trouver le bon
+        if((*currentSensor)->getID() == idAtester && (*currentSensor)->isValid() != "unchecked"){ //si le capteur a déjà été vérifié, pas besoin de tout recalculer, on renvoie directement sa validité
+            return (*currentSensor)->isValid() ;
+        } else if((*currentSensor)->getID() == idAtester) { //si le capteur n'a pas encore ete verifie, on va lancer la procedure de verification
+            int nbSensorsProches = 0 ;
+            Point currentLocation = (*currentSensor)->getLocation();
+            for(comparedSensor=sensors.begin(); comparedSensor!=sensors.end(); comparedSensor++)
+            {//on va reparcourir toute la liste de capteurs pour etre prendre en compte ceux dans le rayon du capteur demandé
+                double distance = (*comparedSensor)->getLocation().getDistance(currentLocation);
+                if(distance > 0 && distance <= distanceSeuil){
+                    if((*comparedSensor)->getLastValue("O3") == -1 || (*comparedSensor)->getLastValue("NO2") == -1 || (*comparedSensor)->getLastValue("SO2") == -1 || (*comparedSensor)->getLastValue("PM10") == -1 ){//si jamais un des attributs du capteur comparé n'est pas présent dans les mesures (égal à -1)
+                        cerr << "Problème dans la methode checkSensors dans la partie proximité : attribut inexistant" << endl ;
+                        break ;
+                    }
+                    //si les mesures sont bien initialisees (differentes de -1), on les ajoute eux moyennes et on incremente le nombre de capteurs pris en compte
+                    moyenne[0] += (*comparedSensor)->getLastValue("O3") ;
+                    moyenne[1] += (*comparedSensor)->getLastValue("NO2") ;
+                    moyenne[2] += (*comparedSensor)->getLastValue("SO2") ;
+                    moyenne[3] += (*comparedSensor)->getLastValue("PM10") ;
+                    nbSensorsProches ++ ;
+                }
+            }
+            
+            bool validiteProximite = true ;
+            
+            string titres [tailleTab] = {"O3", "NO2", "SO2", "PM10"} ;
+            
+            //pour chacune des moyennes, on va verifier l'ecart à la valeur du capteur
+            for(int i = 0 ; i < tailleTab ; i++ ){
+                if(nbSensorsProches != 0){
+                    moyenne[i] /= nbSensorsProches ; //on divise pour avoir la moyenne et pas la somme
+                    if(abs(moyenne[i] - (*currentSensor) -> getLastValue(titres[i])) > seuilsProximite[i]){ // si la difference est superieure au seuil, le capteur n'est pas valide par rapport à son entourage
+                        validiteProximite = false ;
+                        break ;
+                    }
+                } //else if nbSensorsProches==0, du coup la validite geographique reste à true
+            }
+            
+            
+            //on va maintenant parcourir toutes les mesures du capteur pour voir s'il n'y a pas de trop grand saut à un moment
+            //onva donc avoir des mesures actuelles et precedentes, ainsi que leur difference
+            double precedentValues [tailleTab] ;
+            double currentValues [tailleTab] ;
+            double maxDifferences [tailleTab] ;
+            
+            for(int i(0); i<tailleTab; i++)
+            { //on initialise les valeursPrecedentes à -1 et les differences à 0
+                precedentValues[i] = -1 ;
+                maxDifferences[i] = 0 ;
+            }
+            
+            list<Measurement>::const_iterator currentMeasurement ;
+            bool mesuresValides = true ;
+            
+            for(currentMeasurement=(*currentSensor)->getMesures().begin() ; currentMeasurement!=(*currentSensor)->getMesures().end() ; currentMeasurement++)
+            {
+                int typeMesure (-1) ; //correspond au type de la mesure actuellement parcourue, on a 0 pour O3, 1 pour NO2, 2 pour SO2 et 3 pour PM10
+                string type = currentMeasurement->getAttribute().getID() ;
+                
+                if(type == "O3"){
+                    typeMesure = 0 ;
+                } else if(type == "NO2"){
+                    typeMesure = 1 ;
+                } else if(type == "SO2"){
+                    typeMesure = 2 ;
+                } else if(type == "PM10"){
+                    typeMesure = 3 ;
+                }
+                
+                if(typeMesure == -1){ //si typeMesure vaut toujours sa valeur d'initialisation, ca veut dire que le type n'est pas reconnu et la mesure n'est pas valide
+                    mesuresValides = false ;
+                    break ;
+                }
+                
+                if(precedentValues[typeMesure] == -1){ //si le tableau n'est pas encore initialisé (premier parcours de la boucle)
+                    precedentValues[typeMesure] = currentMeasurement->getValue() ;
+                } else { //si le tableau est deja initialisé, on peut comparer la valeur actuelle à la valeur précédente (du meme type)
+                    currentValues[typeMesure] = currentMeasurement->getValue() ;
+                    double difference = currentValues[typeMesure]-precedentValues[typeMesure] ;
+                    maxDifferences[typeMesure] = max(maxDifferences[typeMesure], abs(difference)) ;
+                }
+            }
+            
+            bool validiteDerivee = true ;
+            
+            //si les mesures ne sont pas valides ou qu'une difference excède le seuil, la validité par rapport à la constance des mesures est fausse
+            if(!mesuresValides){
+                validiteDerivee = false ;
+            } else {
+                for(int i(0); i<tailleTab; i++){
+                    if(maxDifferences[i] > seuilsDerivees[i]){ //la difference est toujours positive donc pas besoin de verifier la valeur absolue
+                        validiteDerivee = false ;
+                        break ;
+                    }
+                }
+            }
+            
+            //si le capteur a deux validites, il est valide, s'il a deux invalidites, il est invalide, sinon il est incertain
+            if(validiteProximite && validiteDerivee){
+                (*currentSensor)->setValid("valide") ;
+            } else if(!validiteProximite && !validiteDerivee){
+                (*currentSensor)->setValid("defectueux") ;
+            } else {
+                (*currentSensor)->setValid("incertain") ;
+            }
+            return (*currentSensor)->isValid() ;
+        }
+    }
+    return "sensor not found" ; //si on n'est pas sorti dans la boucle, ca veut dire que l'id du capteur n'a pas ete trouvé dans la liste
 }
 
 void Service :: MesurerPerformancePurificateur (string & cleaner_id) {
@@ -142,121 +273,28 @@ Service::~Service ( )
 
 //----------------------------------------------------- Méthodes protégées
 
-void Service :: checkSensors () {
-
-    list<Sensor*>::iterator currentSensor;
+void Service::afficheSensors(){
+    cout << "Liste des Sensors :" << endl ;
     list<Sensor*>::iterator comparedSensor;
-    
-    
-    int const tailleTab (4) ;
-    double distanceSeuil = 20 ;
-    double moyenne [tailleTab] = { 0, 0, 0, 0 };
-    double seuilsProximite [tailleTab] = { 5, 5, 5, 2 };
-    double seuilsDerivees [tailleTab] = { 5, 5, 5, 2 };
-
-    for(currentSensor=sensors.begin(); currentSensor!=sensors.end(); currentSensor++)
-    {
-        
-        int nbSensorsProches = 0 ;
-        Point currentLocation = (*currentSensor)->getLocation();
-        for(comparedSensor=sensors.begin(); comparedSensor!=sensors.end(); comparedSensor++)
-        {
-            double distance = (*comparedSensor)->getLocation().getDistance(currentLocation);
-            if(distance > 0 && distance <= distanceSeuil){
-                if((*comparedSensor)->getLastValue("O3") == -1 || (*comparedSensor)->getLastValue("NO2") == -1 || (*comparedSensor)->getLastValue("SO2") == -1 || (*comparedSensor)->getLastValue("PM10") == -1 ){
-                    cerr << "Problème dans la methode checkSensors dans la partie proximité : attribut inexistant" << endl ;
-                    break ;
-                }
-                moyenne[0] += (*comparedSensor)->getLastValue("O3") ;
-                moyenne[1] += (*comparedSensor)->getLastValue("NO2") ;
-                moyenne[2] += (*comparedSensor)->getLastValue("SO2") ;
-                moyenne[3] += (*comparedSensor)->getLastValue("PM10") ;
-                nbSensorsProches ++ ;
-            }
-        }
-        
-        bool validiteProximite = true ;
-        
-        string titres [tailleTab] = {"O3", "NO2", "SO2", "PM10"} ;
-        
-        for(int i = 0 ; i < tailleTab ; i++ ){
-            if(nbSensorsProches != 0){
-                moyenne[i] /= nbSensorsProches ;
-                if(abs(moyenne[i] - (*currentSensor) -> getLastValue(titres[i])) > distanceSeuil){
-                    validiteProximite = false ;
-                    break ;
-                }
-            }
-        }
-        
-        
-        
-        double precedentValues [tailleTab] ;
-        double currentValues [tailleTab] ;
-        double maxDifferences [tailleTab] ;
-        
-        for(int i(0); i<tailleTab; i++)
-        {
-            precedentValues[i] = -1 ;
-            maxDifferences[i] = 0 ;
-        }
-        
-        list<Measurement>::const_iterator currentMeasurement ;
-        bool mesuresValides = true ;
-        
-        for(currentMeasurement=(*currentSensor)->getMesures().begin() ; currentMeasurement!=(*currentSensor)->getMesures().end() ; currentMeasurement++)
-        {
-            int typeMesure (-1) ; //0 pour O3, 1 pour NO2, 2 pour SO2 et 3 pour PM10
-            string type = currentMeasurement->getAttribute().getID() ;
-            
-            if(type == "O3"){
-                typeMesure = 0 ;
-            } else if(type == "NO2"){
-                typeMesure = 1 ;
-            } else if(type == "SO2"){
-                typeMesure = 2 ;
-            } else if(type == "PM10"){
-                typeMesure = 3 ;
-            }
-            
-            if(typeMesure == -1){
-                mesuresValides = false ;
-                break ;
-            }
-            
-            if(precedentValues[typeMesure] == -1){ //tableau pas encore initialisé pour cette valeur
-                precedentValues[typeMesure] = currentMeasurement->getValue() ;
-            } else { //tableau initialisé donc on peut comparer
-                currentValues[typeMesure] = currentMeasurement->getValue() ;
-                double difference = currentValues[typeMesure]-precedentValues[typeMesure] ;
-                maxDifferences[typeMesure] = max(maxDifferences[typeMesure], abs(difference)) ;
-            }
-        }
-        
-        bool validiteDerivee = true ;
-        
-        if(!mesuresValides){
-            validiteDerivee = false ;
-        } else {
-            for(int i(0); i<tailleTab; i++){
-                if(maxDifferences[i] > seuilsDerivees[i]){ //la derivee est toujours positive donc pas besoin de verifier la valeur absolue
-                    validiteDerivee = false ;
-                    break ;
-                }
-            }
-        }
-        
-        if(validiteProximite && validiteDerivee){
-            (*currentSensor)->setValid("valide") ;
-        } else if(!validiteProximite && !validiteDerivee){
-            (*currentSensor)->setValid("defectueux") ;
-        } else {
-            (*currentSensor)->setValid("incertain") ;
-        }
-        
+    for(comparedSensor=sensors.begin(); comparedSensor!=sensors.end(); comparedSensor++){
+        cout << "\t --> id:" << (*comparedSensor)->getID() << " ; location:(" << (*comparedSensor)->getLocation().getLatitude() <<", " << (*comparedSensor)->getLocation().getLongitude() << ") ; isValid:" << (*comparedSensor)->isValid() << endl ;
     }
 }
 
+void Service::afficheMeasurements(){
+    cout << "Liste des Measurements :" << endl ;
+    list<Sensor*>::iterator comparedSensor;
+    for(comparedSensor=sensors.begin(); comparedSensor!=sensors.end(); comparedSensor++){
+        cout << "\t --> id:" << (*comparedSensor)->getID() << endl ;
+        list<Measurement>::const_iterator currentMeasurement ;
+        
+        for(currentMeasurement=(*comparedSensor)->getMesures().begin() ; currentMeasurement!=(*comparedSensor)->getMesures().end() ; currentMeasurement++)
+        {
+            cout << "\t\t --> value:" << currentMeasurement->getValue() << " ; attribut:" << currentMeasurement->getAttribute().getID() << endl ;
+        }
+    }
+    
+}
 
 Cleaner* Service::findCleaner(const string & cleaner_id) {
 	list<Cleaner*>::iterator it;
@@ -434,7 +472,7 @@ void Service::readSensors(string& csv_attributes, string& csv_measurements, stri
         	for(it=measurements.lower_bound(sensor_id);it!=measurements.upper_bound(sensor_id);it++){
 			ms.push_back(it->second);
 		}
-		Sensor* s = new Sensor(sensor_id, Point(stod(lat), stod(lon)),"valid", ms);
+		Sensor* s = new Sensor(sensor_id, Point(stod(lat), stod(lon)),"unchecked", ms);
         	sensors.push_back(s);
         	in_sens.get(c);
         	if (in_sens.eof()) {
