@@ -37,7 +37,7 @@ void Service :: MesurerPerformancePurificateur (string & cleaner_id) {
     sortByDistance(cl->getLocation());
     map<Attribute, pair<double, int>> total_ecarts;
     double distance_max = 0.0f;
-    double seuil = -0.06f;
+    double seuil = 0.0f;
     
     list<Sensor*>::iterator currentSensor;
     for(currentSensor=sensors.begin(); currentSensor!=sensors.end(); currentSensor++)
@@ -321,24 +321,20 @@ void Service::calculerPourcentageAttributs(map<Attribute, double> & pourcentages
 		it_fin = val_fin.find(it_deb->first);
 		if (it_fin!=val_fin.end()) {
 			pourcentages.insert(make_pair(it_deb->first, (it_deb->second.second-it_fin->second.second)/it_deb->second.second));
-		
-		/*cout << ">>> " << it_deb->second.second << " "<< it_fin->second.second << " "
-		 << it_deb->second.first.getJour() << "/" << it_deb->second.first.getMois() << "/" << it_deb->second.first.getAnnee() << " "
-		 << it_fin->second.first.getJour() << "/" << it_fin->second.first.getMois() << "/" << it_fin->second.first.getAnnee() << " "<< endl;*/
 		}
 	}
 }
 
 bool Service::estEfficace(const map<Attribute, double> & ecart_courant, double seuil) {
-	bool efficace = true;
 	map<Attribute,double>::const_iterator it;
+	double total = 0;
+	int nombre = 0;
 	for(it=ecart_courant.begin();it!=ecart_courant.end();it++){
-		if (it->second<seuil) {
-			efficace = false;
-			break;
-		}
+		total += it->second;
+		++nombre;
 	}
-	return efficace;
+	//cout << ">>> " << total << " " << nombre << endl;
+	return total/nombre>=seuil;
 }
 
 // FONCTIONS DE LECTURE DE CSV

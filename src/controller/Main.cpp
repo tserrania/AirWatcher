@@ -36,13 +36,13 @@ int main (void){
 		cout<<"L'utilisateur n'existe pas"<<endl;
 	}
 	
-	/*
+	
 	// Pour des tests
 	string s = "Cleaner0";
 	service.MesurerPerformancePurificateur(s);
 	string s2 = "Cleaner1";
 	service.MesurerPerformancePurificateur(s2);
-	*/
+	
 	
 	cout<<"termine"<<endl;
 	
