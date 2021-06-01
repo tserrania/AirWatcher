@@ -55,6 +55,15 @@ id(ID), cleaners(Cleaners)
     #endif
 } //----- Fin de Provider
 
+Provider :: Provider ( const string & name, const string & passeword, const string & ID ) : User (name, passeword),
+id(ID)
+// Algorithme :
+//
+{
+    #ifdef MAP
+        cout << "Appel au constructeur de <Provider>" << endl;
+    #endif
+} //----- Fin de Provider
 
 Provider::~Provider ( )
 // Algorithme :

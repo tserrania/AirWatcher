@@ -20,6 +20,8 @@ using namespace std;
 
 //------------------------------------------------------------------ Types
 
+class Cleaner;
+
 //------------------------------------------------------------------------
 // Rôle de la classe <Provider>
 //
@@ -45,6 +47,12 @@ public:
 	Provider(const Provider & unProvider);
 	
     Provider ( const string & name, const string & passeword, const string & id, const list <Cleaner> & cleaners );
+    // Mode d'emploi () :
+    //
+    // Contrat :
+    //
+    
+    Provider ( const string & name, const string & passeword, const string & id );
     // Mode d'emploi () :
     //
     // Contrat :

@@ -76,9 +76,9 @@ protected:
     void readCleaners(string& csv_cleaners) ;
 
 //----------------------------------------------------- Attributs protégés
-    list<User> users;
-    list<Sensor> sensors;
-    list<Cleaner> cleaners;
+    list<User*> users;
+    list<Sensor*> sensors;
+    list<Cleaner*> cleaners;
 };
 
 //-------------------------------- Autres définitions dépendantes de <Service>

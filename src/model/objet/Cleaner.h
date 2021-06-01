@@ -13,6 +13,7 @@
 #include "model/objet/Point.h"
 #include "model/objet/Sensor.h"
 #include "model/objet/Date.h"
+#include "model/objet/Provider.h"
 
 //--------------------------------------------------- Interfaces utilisées
 
@@ -35,7 +36,15 @@ class Cleaner
 public:
 //----------------------------------------------------- Méthodes publiques
 
-    string getId();
+    Provider* getProvider();
+    // Mode d'emploi :
+    // Recupère le Provider du Cleaner
+    
+    void setProvider(Provider* p);
+    // Mode d'emploi :
+    // Définit le Provider du Cleaner
+    
+    string getID();
     // Mode d'emploi :
     // Recupère l'ID du Cleaner
 

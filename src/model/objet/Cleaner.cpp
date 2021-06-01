@@ -22,7 +22,17 @@ using namespace std;
 
 //----------------------------------------------------- Méthodes publiques
 
-string Cleaner::getId()
+Provider* Cleaner::getProvider()
+{
+    return provider;
+}
+
+void Cleaner::setProvider(Provider* p)
+{
+    provider = p;
+}
+
+string Cleaner::getID()
 {
     return id;
 }
