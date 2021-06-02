@@ -17,7 +17,7 @@ LDFLAGS = -Wall -pedantic -std=c++11
 
 INTERFACE = $(CONTROLLER) $(OBJET) $(SERVICE) $(VIEW)
 OBJETS = $(INTERFACE:.h=.o)
-EXE = exec
+EXE = airwatcher
 EFFACE = clean
 
 CONTROLLER = Main.h

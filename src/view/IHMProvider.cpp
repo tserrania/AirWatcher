@@ -49,7 +49,8 @@ void IHMProvider::afficherEfficacite(const map<Attribute,double> & pourcentages,
 		cout<<endl;
 	}
 	
-	if (pourcentages.begin()!=pourcentages.end()) {
+	// Inutile; calculer le rayon d'action et le pourcentage d'amélioration est impossible
+	/*if (pourcentages.begin()!=pourcentages.end()) {
 		cout<<"Le pourcentage d'amélioration moyen par polluant est: "<<endl;
 		
 		map<Attribute, double>::const_iterator it;
@@ -57,7 +58,7 @@ void IHMProvider::afficherEfficacite(const map<Attribute,double> & pourcentages,
 			cout<<it->first<<": "<<it->second<<"%"<<endl;
 		}
 		cout<<endl;
-	}
+	}*/
 }
 
 int IHMProvider::traduireChoix(int choix) const{

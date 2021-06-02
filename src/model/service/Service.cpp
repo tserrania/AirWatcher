@@ -68,9 +68,9 @@ string Service :: checkSensor (string idAtester) {
     //pour chacun des 4 types de mesures, on initialise des seuils au dessus desquels les mesures ne sont plus valides
     //chaque colonne correspond à un type de mesure (O3, NO2, SO2 puis PM10)
     int const tailleTab (4) ;
-    double distanceSeuil = 1000 ; //distance maximale pour qu'un capteur soit pris en compte pour la validite de proximité
-    double seuilsProximite [tailleTab] = { 5, 5, 5, 2 }; //il ne faut pas que le capteur soit plus eloigné de ces valeurs des moyennes dans son rayon geographique
-    double seuilsDerivees [tailleTab] = { 5, 5, 5, 2 }; //il ne faut pas que les valeurs du capteur different entre elles de plus que ces seuils
+    double distanceSeuil = 50.0 ; //distance maximale pour qu'un capteur soit pris en compte pour la validite de proximité
+    double seuilsProximite [tailleTab] = { 10.0, 10.0, 10.0, 10.0 }; //il ne faut pas que le capteur soit plus eloigné de ces valeurs des moyennes dans son rayon geographique
+    double seuilsDerivees [tailleTab] = { 10.0, 10.0, 10.0, 10.0 }; //il ne faut pas que les valeurs du capteur different entre elles de plus que ces seuils
     
     double moyenne [tailleTab] = { 0, 0, 0, 0 }; //moyenne des mesures des capteurs dans le rayon seuil
 
@@ -151,7 +151,9 @@ string Service :: checkSensor (string idAtester) {
                 
                 if(precedentValues[typeMesure] == -1){ //si le tableau n'est pas encore initialisé (premier parcours de la boucle)
                     precedentValues[typeMesure] = currentMeasurement->getValue() ;
+                    currentValues[typeMesure] = currentMeasurement->getValue() ;
                 } else { //si le tableau est deja initialisé, on peut comparer la valeur actuelle à la valeur précédente (du meme type)
+                    precedentValues[typeMesure] = currentValues[typeMesure] ;
                     currentValues[typeMesure] = currentMeasurement->getValue() ;
                     double difference = currentValues[typeMesure]-precedentValues[typeMesure] ;
                     maxDifferences[typeMesure] = max(maxDifferences[typeMesure], abs(difference)) ;
@@ -510,12 +512,18 @@ void Service::readSensors(string& csv_attributes, string& csv_measurements, stri
         	//Ignore everything until the end of the line
         	getline(in_sens, buffer, '\n');
         	
-        	//list<Measurement> ms(measurements.lower_bound(sensor_id), measurements.upper_bound(sensor_id));
         	list<Measurement> ms;
         	multimap<string,Measurement>::const_iterator it;
         	for(it=measurements.lower_bound(sensor_id);it!=measurements.upper_bound(sensor_id);it++){
 			ms.push_back(it->second);
 		}
+		
+		//Trier les mesures par date
+		ms.sort([](const Measurement & a, const Measurement & b) {
+			Date date_a = a.getDate();
+			Date date_b = b.getDate();
+			return date_a <= date_b;
+		});
 		Sensor* s = new Sensor(sensor_id, Point(stod(lat), stod(lon)),"unchecked", ms);
         	sensors.push_back(s);
         	in_sens.get(c);
