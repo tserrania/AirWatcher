@@ -30,14 +30,6 @@ using namespace std;
 
 //----------------------------------------------------- Méthodes publiques
 
-void Service::afficheVerification(){
-    cout << endl << endl << "<<------------------------------------------->>" << endl << endl ;
-    afficheSensors() ;
-    cout << endl << endl << "<<------------------------------------------->>" << endl << endl ;
-    afficheMeasurements() ;
-    cout << endl << endl << "<<------------------------------------------->>" << endl << endl ;
-}
-
 Sensor * Service::getSensorByID(const string & sensorID){
 	list<Sensor*>::iterator currentSensor;
 	
@@ -316,29 +308,6 @@ Service::~Service ( )
 //------------------------------------------------------------------ PRIVE
 
 //----------------------------------------------------- Méthodes protégées
-
-void Service::afficheSensors(){
-    cout << "Liste des Sensors :" << endl ;
-    list<Sensor*>::iterator comparedSensor;
-    for(comparedSensor=sensors.begin(); comparedSensor!=sensors.end(); comparedSensor++){
-        cout << "\t --> id:" << (*comparedSensor)->getID() << " ; location:(" << (*comparedSensor)->getLocation().getLatitude() <<", " << (*comparedSensor)->getLocation().getLongitude() << ") ; isValid:" << (*comparedSensor)->isValid() << endl ;
-    }
-}
-
-void Service::afficheMeasurements(){
-    cout << "Liste des Measurements :" << endl ;
-    list<Sensor*>::iterator comparedSensor;
-    for(comparedSensor=sensors.begin(); comparedSensor!=sensors.end(); comparedSensor++){
-        cout << "\t --> id:" << (*comparedSensor)->getID() << endl ;
-        list<Measurement>::const_iterator currentMeasurement ;
-        
-        for(currentMeasurement=(*comparedSensor)->getMesures().begin() ; currentMeasurement!=(*comparedSensor)->getMesures().end() ; currentMeasurement++)
-        {
-            cout << "\t\t --> value:" << currentMeasurement->getValue() << " ; attribut:" << currentMeasurement->getAttribute().getID() << endl ;
-        }
-    }
-    
-}
 
 Cleaner* Service::findCleaner(const string & cleaner_id) {
 	list<Cleaner*>::iterator it;
