@@ -16,29 +16,7 @@ const string providersPath="../src/data/providers.csv";
 const string sensorsPath="../src/data/sensors.csv";
 const string usersPath="../src/data/users.csv";
 
-//~ void connexion(AbstractIHM *ihm, User *utilisateur){
-	//~ string id; string mdp;
-	//~ while(utilisateur==nullptr){
-		//~ ihm->menuConnexion(id,mdp);
-		//~ utilisateur=service.authentifier(id,mdp);
-		//~ if(utilisateur==nullptr){
-			//~ cout<<"Identifiants incorrects, veuillez réessayer"<<endl;
-		//~ }
-	//~ }
-//~ }
 
-//~ void choixIHM(AbstractIHM *ihm, User *utilisateur){
-	//~ if(dynamic_cast<Agency*>(utilisateur)==nullptr && dynamic_cast<Provider*>(utilisateur)==nullptr){
-		//~ ihm = new IHMIndividual(*utilisateur);
-		//~ cout<<"Individual"<<endl;
-	//~ }else if(dynamic_cast<Agency*>(utilisateur)==nullptr && dynamic_cast<Individual*>(utilisateur)==nullptr){
-		//~ ihm = new IHMProvider(*utilisateur);
-		//~ cout<<"Provider"<<endl;
-	//~ }else if(dynamic_cast<Provider*>(utilisateur)==nullptr && dynamic_cast<Individual*>(utilisateur)==nullptr){
-		//~ ihm = new IHMAgency(*utilisateur);
-		//~ cout<<"Agency"<<endl;
-	//~ }
-//~ }
 
 //Selon choix, qui est un numéro qui dépend à la fois de l'entrée utilisateur et du type d'IHM, on exécute la méthode correspondante
 void choixAction(int choix, AbstractIHM *ihm, Service * service, User * utilisateur){
@@ -100,26 +78,29 @@ int main (void){
 		delete ihm; 
 		if(dynamic_cast<Agency*>(utilisateur)==nullptr && dynamic_cast<Provider*>(utilisateur)==nullptr){
 			ihm = new IHMIndividual(*utilisateur);
-			cout<<"Individual"<<endl;
 		}else if(dynamic_cast<Agency*>(utilisateur)==nullptr && dynamic_cast<Individual*>(utilisateur)==nullptr){
 			ihm = new IHMProvider(*utilisateur);
-			cout<<"Provider"<<endl;
 		}else if(dynamic_cast<Provider*>(utilisateur)==nullptr && dynamic_cast<Individual*>(utilisateur)==nullptr){
 			ihm = new IHMAgency(*utilisateur);
-			cout<<"Agency"<<endl;
 		}
 		
 		
 		choix=-1;
 		while(choix!=0){  //Choix vaut 0 lorsque l'utilisateur demande de quitter
 			ihm->afficherMenu();  //Affichage de l'ensemble des fonctionnalités disponibles
-			choix=ihm->recupererChoix();  //On récupère l'entrée clavier
-			if(choix!=-1){
+			string chaine=ihm->recupererChaine();  //On récupère l'entrée clavier
+			try{
+				choix=stoi(chaine);
+				if(choix!=-1){
 				choix=ihm->traduireChoix(choix); //On interprète l'entrée utlisateur pour appeler le bon service
 				choixAction(choix,ihm,service,utilisateur);
 			}else{
 				cout<<"Choix invalide"<<endl;
 			}
+			}catch(invalid_argument & exception){
+				cout<<"Choix invalide"<<endl;
+			}
+			
 		}
 	}
 	delete ihm; 
