@@ -43,7 +43,7 @@ public:
 
     void AddSensor(Sensor & s);
     
-    int GetPoints () const ;
+    virtual int GetPoints () const ;
     
     void SetReliable (bool reliable);
     

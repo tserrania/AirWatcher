@@ -31,7 +31,7 @@ void choixAction(int choix, AbstractIHM *ihm, Service * service, User * utilisat
 		
 		case 2:
 			cout<<"Affichage du nombre de points"<<endl;
-			ihm->afficherPoints(utilisateur->getPoints());
+			ihm->afficherPoints(utilisateur->GetPoints());
 			break;
 		
 		case 3:{

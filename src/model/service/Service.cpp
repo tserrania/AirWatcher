@@ -89,6 +89,8 @@ string Service :: checkSensor (string idAtester) {
                         cerr << "Problème dans la methode checkSensors dans la partie proximité : attribut inexistant" << endl ;
                         break ;
                     }
+                    
+                    (*comparedSensor)->incrementerPointsUtilisateur() ;
                     //si les mesures sont bien initialisees (differentes de -1), on les ajoute eux moyennes et on incremente le nombre de capteurs pris en compte
                     moyenne[0] += (*comparedSensor)->getLastValue("O3") ;
                     moyenne[1] += (*comparedSensor)->getLastValue("NO2") ;
@@ -206,6 +208,7 @@ pair<map<Attribute, double>, double> Service :: MesurerPerformancePurificateur (
 	    for(currentSensor=sensors.begin(); currentSensor!=sensors.end(); currentSensor++)
 	    {
 	    	map<Attribute, double> ecart_courant;
+            (*currentSensor)->incrementerPointsUtilisateur() ;
 	    	// On calcule le pourcentage d'amélioration de chaque attribut
 	    	calculerPourcentageAttributs(ecart_courant, **currentSensor, cl->getStart(), cl->getStop());
 	    	

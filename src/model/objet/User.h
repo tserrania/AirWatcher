@@ -40,7 +40,7 @@ public:
     
     virtual const string & GetID()const{return name;}
     
-    virtual int getPoints(){return 0;}
+    virtual int GetPoints() const {return 42;}
 //------------------------------------------------- Surcharge d'opérateurs
 
 	User & operator =(const User & unUser);

@@ -48,6 +48,7 @@ void Sensor::setValid(string valide) {
 }
 
 const list<Measurement> & Sensor::getMesures() const{
+    
 	return mesures ;
 }
 
@@ -83,7 +84,9 @@ double Sensor::getLastValue(const string attribut) const{
 }
 
 void Sensor::incrementerPointsUtilisateur(){
-	individual->incrementerPoints() ;
+    if(individual != nullptr) {
+        individual->incrementerPoints() ;
+    }
 }
 
 
