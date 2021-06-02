@@ -54,7 +54,6 @@ void IHMAgency::afficherCapteurDefectueux(const string & etatCapteur) const{
 int IHMAgency::traduireChoix(int choix) const{
 	if(choix==1){                              
 		selectionCapteurDefectueux();
-		string idCapteur=recupererChaine();
 		return(1);  //Code correspondant à l'appel du service repérer un capteur défectueux
 	}else if(choix==2){
 		return(0); //Code correspondant pour quitter l'application

@@ -29,29 +29,29 @@ using namespace std;
 //} //----- Fin de Méthode
 
 void AbstractIHM::accueil() const{
-	cout<<"Bienvenue dans AirWatcher"<<endl;
-	cout<<"Veuillez taper: "<<endl;
-	cout<<"		1 pour vous connecter."<<endl;
-	cout<<"		2 pour quitter."<<endl;
+    cout<<"Bienvenue dans AirWatcher"<<endl;
+    cout<<"Veuillez taper: "<<endl;
+    cout<<"        1 pour vous connecter."<<endl;
+    cout<<"        2 pour quitter."<<endl;
 }
 
 void AbstractIHM::menuConnexion(string & id, string & mdp) const{
-	cout<<"identifiant: "<<endl;
-	cin>>id;
-	cout<<"mot de passe: "<<endl;
-	cin>>mdp;
+    cout<<"identifiant: "<<endl;
+    cin>>id;
+    cout<<"mot de passe: "<<endl;
+    cin>>mdp;
 }
 
 int AbstractIHM::recupererChoix() const{
-	int choix;
-	cin>>choix;
-	return(choix);
+    int choix;
+    cin>>choix;
+    return(choix);
 }
 
 string AbstractIHM::recupererChaine() const{
-	string chaine;
-	cin>>chaine;
-	return(chaine);
+    string chaine;
+    cin>>chaine;
+    return(chaine);
 }
 
 
@@ -60,10 +60,10 @@ AbstractIHM & AbstractIHM::operator = ( const AbstractIHM & unAbstractIHM )
 // Algorithme :
 //
 {
-	if(this!=&unAbstractIHM){
-		utilisateurConnecte=unAbstractIHM.utilisateurConnecte;
-	}
-	return(*this);
+    if(this!=&unAbstractIHM){
+        utilisateurConnecte=unAbstractIHM.utilisateurConnecte;
+    }
+    return(*this);
 } //----- Fin de operator =
 
 
@@ -101,4 +101,3 @@ AbstractIHM::~AbstractIHM ( )
 //------------------------------------------------------------------ PRIVE
 
 //----------------------------------------------------- Méthodes protégées
-

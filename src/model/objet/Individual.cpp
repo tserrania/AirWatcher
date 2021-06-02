@@ -82,7 +82,6 @@ Individual::Individual(const string & name, const string & password, const strin
     #endif
     reliable=true;
     points=0;
-    sensors;
 }
 
 

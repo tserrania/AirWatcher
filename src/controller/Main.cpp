@@ -9,12 +9,12 @@
 #include "model/service/Service.h"
 using namespace std;
 
-const string attributesPath="../../dataset/attributes.csv";
-const string cleanersPath="../../dataset/cleaners.csv";
-const string measurementsPath="../../dataset/measurements.csv";
-const string providersPath="../../dataset/providers.csv";
-const string sensorsPath="../../dataset/sensors.csv";
-const string usersPath="../../dataset/users.csv";
+const string attributesPath="../src/data/attributes.csv";
+const string cleanersPath="../src/data/cleaners.csv";
+const string measurementsPath="../src/data/measurements.csv";
+const string providersPath="../src/data/providers.csv";
+const string sensorsPath="../src/data/sensors.csv";
+const string usersPath="../src/data/users.csv";
 
 //~ void connexion(AbstractIHM *ihm, User *utilisateur){
 	//~ string id; string mdp;
